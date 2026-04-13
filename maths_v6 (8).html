@@ -1,0 +1,3263 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths pour Informaticiens</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+
+
+/* ══════════════════════════════════════════
+   THÈMES
+══════════════════════════════════════════ */
+:root {
+  --transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+
+[data-theme="light"] {
+  --bg-page:    #f5f4f0;
+  --bg-surface: #ffffff;
+  --bg-raised:  #fafaf8;
+  --bg-inset:   #f0efe9;
+  --bg-hover:   #f2f1ec;
+
+  --text-primary:   #1a1917;
+  --text-secondary: #4a4845;
+  --text-muted:     #8c8a85;
+  --text-faint:     #b8b5af;
+
+  --border-soft:  rgba(0,0,0,0.07);
+  --border-med:   rgba(0,0,0,0.12);
+  --border-hard:  rgba(0,0,0,0.20);
+
+  --accent:       #5b5bd6;
+  --accent-bg:    rgba(91,91,214,0.07);
+  --accent-border:rgba(91,91,214,0.22);
+
+  --def-color:   #1d6fa4;
+  --def-bg:      rgba(29,111,164,0.07);
+  --def-border:  rgba(29,111,164,0.22);
+
+  --thm-color:   #1a7a50;
+  --thm-bg:      rgba(26,122,80,0.07);
+  --thm-border:  rgba(26,122,80,0.22);
+
+  --teal-color:  #0f766e;
+  --teal-bg:     rgba(15,118,110,0.07);
+  --teal-border: rgba(15,118,110,0.2);
+
+  --purple-color: #6d28d9;
+  --purple-bg:    rgba(109,40,217,0.07);
+  --purple-border:rgba(109,40,217,0.2);
+
+  --coral-color: #c2410c;
+  --coral-bg:    rgba(194,65,12,0.07);
+  --coral-border:rgba(194,65,12,0.2);
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+}
+
+[data-theme="dark"] {
+  --bg-page:    #111110;
+  --bg-surface: #1c1b19;
+  --bg-raised:  #222120;
+  --bg-inset:   #2a2927;
+  --bg-hover:   #272624;
+
+  --text-primary:   #eeece8;
+  --text-secondary: #a8a5a0;
+  --text-muted:     #6b6865;
+  --text-faint:     #4a4845;
+
+  --border-soft:  rgba(255,255,255,0.06);
+  --border-med:   rgba(255,255,255,0.10);
+  --border-hard:  rgba(255,255,255,0.16);
+
+  --accent:       #7c7ce8;
+  --accent-bg:    rgba(124,124,232,0.10);
+  --accent-border:rgba(124,124,232,0.28);
+
+  --def-color:   #60aad8;
+  --def-bg:      rgba(96,170,216,0.08);
+  --def-border:  rgba(96,170,216,0.22);
+
+  --thm-color:   #4ade80;
+  --thm-bg:      rgba(74,222,128,0.07);
+  --thm-border:  rgba(74,222,128,0.20);
+
+  --teal-color:  #2dd4bf;
+  --teal-bg:     rgba(45,212,191,0.07);
+  --teal-border: rgba(45,212,191,0.22);
+
+  --purple-color: #c084fc;
+  --purple-bg:    rgba(192,132,252,0.08);
+  --purple-border:rgba(192,132,252,0.22);
+
+  --coral-color: #fb923c;
+  --coral-bg:    rgba(251,146,60,0.08);
+  --coral-border:rgba(251,146,60,0.22);
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.25);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.35);
+}
+
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 17px; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.65;
+  transition: var(--transition);
+}
+
+/* ══════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════ */
+.app {
+  display: flex;
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 268px;
+  min-width: 268px;
+  position: relative;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.main {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2rem 2.5rem 4rem;
+  background: var(--bg-page);
+}
+
+/* ══════════════════════════════════════════
+   SIDEBAR — HEADER
+══════════════════════════════════════════ */
+.sidebar-header {
+  padding: 1.1rem 1.1rem 0.9rem;
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-brand { flex: 1; }
+
+.sidebar-logo {
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.sidebar-sub {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* TOGGLE THÈME */
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border-med);
+  background: var(--bg-inset);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--bg-hover); border-color: var(--border-hard); }
+
+/* SEARCH */
+.search-wrap {
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem 0.45rem 2.1rem;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.search-input:focus {
+  border-color: var(--accent);
+  background: var(--bg-surface);
+}
+.search-input::placeholder { color: var(--text-faint); }
+
+/* FILTERS */
+.filter-row {
+  padding: 0.55rem 0.9rem;
+  display: flex;
+  gap: 5px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.filter-btn {
+  padding: 4px 11px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border-med);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+}
+.filter-btn:hover { color: var(--text-secondary); border-color: var(--border-hard); }
+.filter-btn.f-all    { background: var(--accent-bg);  border-color: var(--accent-border); color: var(--accent); }
+.filter-btn.f-def    { background: var(--def-bg);     border-color: var(--def-border);    color: var(--def-color); }
+.filter-btn.f-thm    { background: var(--thm-bg);     border-color: var(--thm-border);    color: var(--thm-color); }
+
+/* NAV */
+.nav-list { overflow-y: auto; flex: 1; min-height: 0; padding: 0.4rem 0 1rem; }
+
+.nav-section {
+  padding: 0.8rem 0.9rem 0.2rem;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.38rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.1s;
+  border-left: 2px solid transparent;
+  color: var(--text-secondary);
+}
+.nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+.nav-item.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.nav-chip {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.chip-def { background: var(--def-bg); color: var(--def-color); }
+.chip-thm { background: var(--thm-bg); color: var(--thm-color); }
+
+.nav-label { font-size: 12.5px; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+
+/* ══════════════════════════════════════════
+   MAIN — HOME
+══════════════════════════════════════════ */
+.hero {
+  margin-bottom: 2rem;
+}
+
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.hero-title {
+  font-family: 'Lora', serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.hero-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.chapters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.chapter-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.chapter-card:hover {
+  border-color: var(--border-hard);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.chap-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.5rem;
+}
+.chap-label.cl-teal   { color: var(--teal-color); }
+.chap-label.cl-purple { color: var(--purple-color); }
+.chap-label.cl-coral  { color: var(--coral-color); }
+
+.chap-title {
+  font-family: 'Lora', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  line-height: 1.35;
+}
+
+.chap-sub {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.chap-stats {
+  display: flex;
+  gap: 0.85rem;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.chap-stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.sd-def  { background: var(--def-color); }
+.sd-thm  { background: var(--thm-color); }
+
+.chap-arrow {
+  float: right;
+  color: var(--text-faint);
+  font-size: 18px;
+  margin-top: -1.2rem;
+}
+
+/* ══════════════════════════════════════════
+   MAIN — CHAPTER VIEW
+══════════════════════════════════════════ */
+.chap-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.back-btn {
+  background: none;
+  border: 1px solid var(--border-med);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 7px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+}
+.back-btn:hover { color: var(--text-primary); border-color: var(--border-hard); }
+
+.chap-badge {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cb-teal   { background: var(--teal-bg);   color: var(--teal-color);   border: 1px solid var(--teal-border); }
+.cb-purple { background: var(--purple-bg); color: var(--purple-color); border: 1px solid var(--purple-border); }
+.cb-coral  { background: var(--coral-bg);  color: var(--coral-color);  border: 1px solid var(--coral-border); }
+
+.chap-heading {
+  font-family: 'Lora', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ══════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════ */
+.item-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-sm);
+  scroll-margin-top: 1rem;
+}
+.item-card:hover { border-color: var(--border-med); }
+.item-card.expanded { border-color: var(--border-med); box-shadow: var(--shadow-md); }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.type-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 3px 8px;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.tb-def { background: var(--def-bg); color: var(--def-color); border: 1px solid var(--def-border); }
+.tb-thm { background: var(--thm-bg); color: var(--thm-color); border: 1px solid var(--thm-border); }
+
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  min-width: 28px;
+}
+
+.card-title {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+  line-height: 1.35;
+}
+
+.chevron {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border-med);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-faint);
+  font-size: 11px;
+  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), background 0.15s;
+}
+.item-card.expanded .chevron {
+  transform: rotate(180deg);
+  background: var(--bg-inset);
+  color: var(--text-muted);
+}
+
+/* CARD BODY */
+.card-body {
+  display: none;
+  padding: 0 1.2rem 1.2rem;
+  border-top: 1px solid var(--border-soft);
+}
+.item-card.expanded .card-body { display: block; }
+
+/* CONTENT BLOCK (énoncé) */
+.content-block {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  margin-top: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.75;
+}
+
+/* EXPLAIN BUTTON */
+.explain-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 1rem;
+  padding: 7px 16px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+}
+.explain-btn:hover { background: var(--accent-bg); filter: brightness(1.1); }
+.explain-btn .icon { font-size: 13px; }
+
+/* EXPLANATION PANEL */
+.explanation-panel {
+  display: none;
+  margin-top: 1rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.explanation-panel.open { display: block; }
+
+.exp-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.7rem 1.1rem;
+  background: var(--accent-bg);
+  border-bottom: 1px solid var(--accent-border);
+}
+
+.exp-header-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.exp-content {
+  padding: 1.25rem 1.35rem;
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.exp-content p { margin-bottom: 0.85rem; }
+.exp-content p:last-child { margin-bottom: 0; }
+
+.exp-content strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.exp-content em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* TAGS */
+.tags-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.tag-pill {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--bg-inset);
+  color: var(--text-muted);
+  border: 1px solid var(--border-soft);
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════════
+   EXERCICES
+══════════════════════════════════════════ */
+:root {
+  --ex-color:  #b45309;
+  --ex-bg:     rgba(180,83,9,0.07);
+  --ex-border: rgba(180,83,9,0.22);
+}
+[data-theme="dark"] {
+  --ex-color:  #fbbf24;
+  --ex-bg:     rgba(251,191,36,0.08);
+  --ex-border: rgba(251,191,36,0.22);
+}
+
+.tb-ex {
+  background: var(--ex-bg);
+  color: var(--ex-color);
+  border: 1px solid var(--ex-border);
+}
+.chip-ex { background: var(--ex-bg); color: var(--ex-color); }
+
+/* Section exercices dans un chapitre */
+.ex-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--ex-border);
+}
+.ex-section-title {
+  font-family: 'Lora', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ex-color);
+}
+.ex-section-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--ex-bg);
+  color: var(--ex-color);
+  border: 1px solid var(--ex-border);
+}
+
+/* Badge série sur la carte */
+.ex-serie-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 4px;
+  background: var(--ex-bg);
+  color: var(--ex-color);
+  border: 1px solid var(--ex-border);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+/* Références vers cours */
+.ex-refs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.85rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--def-bg);
+  border: 1px solid var(--def-border);
+  border-radius: 9px;
+}
+.ex-refs-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--def-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  align-self: center;
+  margin-right: 2px;
+}
+.ex-ref-link {
+  font-size: 11.5px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  background: var(--bg-surface);
+  border: 1px solid var(--def-border);
+  color: var(--def-color);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+}
+.ex-ref-link:hover {
+  background: var(--def-bg);
+  border-color: var(--def-color);
+}
+
+/* Solution accordion */
+.sol-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 1rem;
+  padding: 7px 16px;
+  background: var(--ex-bg);
+  border: 1px solid var(--ex-border);
+  border-radius: 8px;
+  color: var(--ex-color);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+}
+.sol-btn:hover { filter: brightness(1.1); }
+
+.sol-panel {
+  display: none;
+  margin-top: 0.85rem;
+  border: 1px solid var(--ex-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.sol-panel.open { display: block; }
+
+.sol-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.65rem 1.1rem;
+  background: var(--ex-bg);
+  border-bottom: 1px solid var(--ex-border);
+}
+.sol-header-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ex-color);
+}
+
+.sol-content {
+  padding: 1.2rem 1.35rem;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-primary);
+  background: var(--bg-raised);
+}
+.sol-content p { margin-bottom: 0.85rem; }
+.sol-content p:last-child { margin-bottom: 0; }
+.sol-content strong { font-weight: 600; color: var(--text-primary); }
+.sol-content em { color: var(--ex-color); font-style: normal; font-weight: 600; }
+
+/* Étapes numérotées */
+.sol-step {
+  display: flex;
+  gap: 0.85rem;
+  margin-bottom: 1.1rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+}
+.sol-step-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  background: var(--ex-color);
+  color: var(--bg-surface);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.sol-step-body {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.sol-step-body strong { color: var(--ex-color); }
+
+/* Stat exo dans la home card */
+.sd-ex { background: var(--ex-color); }
+
+/* Filtre exo dans sidebar */
+.filter-btn.f-ex { background: var(--ex-bg); border-color: var(--ex-border); color: var(--ex-color); }
+
+/* Carte exo : bordure gauche orange */
+.item-card.ex-card { border-left: 3px solid var(--ex-border); }
+.item-card.ex-card:hover { border-left-color: var(--ex-color); }
+
+/* ══════════════════════════════════════════
+   SUIVI — CHECKBOXES
+══════════════════════════════════════════ */
+.mastery-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--bg-inset);
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+}
+
+.mastery-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 4px;
+}
+
+.check-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 7px;
+  border: 1.5px solid var(--border-med);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.18s;
+  user-select: none;
+}
+.check-btn:hover { border-color: var(--border-hard); color: var(--text-secondary); }
+
+.check-btn.checked-enonce {
+  background: var(--thm-bg);
+  border-color: var(--thm-border);
+  color: var(--thm-color);
+}
+.check-btn.checked-demo {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.check-icon {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  border: 1.5px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.check-btn.checked-enonce .check-icon,
+.check-btn.checked-demo .check-icon {
+  background: currentColor;
+}
+.check-btn.checked-enonce .check-icon::after,
+.check-btn.checked-demo .check-icon::after {
+  content: '✓';
+  color: var(--bg-surface);
+  font-weight: 700;
+  font-size: 9px;
+}
+
+/* ══════════════════════════════════════════
+   SUIVI — BARRE DE PROGRESSION
+══════════════════════════════════════════ */
+.progress-bar-wrap {
+  margin-top: 0.85rem;
+  background: var(--bg-inset);
+  border-radius: 6px;
+  height: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  background: linear-gradient(90deg, var(--thm-color), var(--accent));
+}
+
+/* ══════════════════════════════════════════
+   SUIVI — SIDEBAR GLOBAL SCORE
+══════════════════════════════════════════ */
+.sidebar-score {
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--bg-raised);
+}
+
+.score-title {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.score-pct {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.score-bar-bg {
+  background: var(--bg-inset);
+  border-radius: 4px;
+  height: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  margin-bottom: 6px;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  background: linear-gradient(90deg, var(--thm-color), var(--accent));
+}
+
+.score-legend {
+  display: flex;
+  gap: 10px;
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+
+.score-leg-item { display: flex; align-items: center; gap: 4px; }
+
+.score-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.score-dot-enonce { background: var(--thm-color); }
+.score-dot-demo   { background: var(--accent); }
+
+/* ══════════════════════════════════════════
+   SUIVI — HOME DASHBOARD
+══════════════════════════════════════════ */
+.progress-dashboard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.dash-title {
+  font-family: 'Lora', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.1rem;
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+
+.dash-metric {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  text-align: center;
+}
+
+.dash-metric-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.dmv-enonce { color: var(--thm-color); }
+.dmv-demo   { color: var(--accent); }
+.dmv-total  { color: var(--text-primary); }
+
+.dash-metric-label {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.dash-chap-list { margin-top: 1.1rem; }
+
+.dash-chap-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.dash-chap-name {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  width: 140px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-chap-bar-bg {
+  flex: 1;
+  background: var(--bg-inset);
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.dash-chap-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--thm-color), var(--accent));
+  transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.dash-chap-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* nav item — indicator dot */
+.nav-item .nav-dots {
+  display: flex;
+  gap: 3px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.nav-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--border-hard);
+}
+.nav-dot.done-e { background: var(--thm-color); }
+.nav-dot.done-d { background: var(--accent); }
+
+/* ══════════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════════ */
+.empty {
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+.empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.empty p { font-size: 14px; }
+
+/* ══════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-hard); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
+
+
+/* ══════════════════════════════════════════
+   SUIVI — CHECKBOXES
+══════════════════════════════════════════ */
+.mastery-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0.9rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg-inset);
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  flex-wrap: wrap;
+}
+.mastery-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 2px;
+  white-space: nowrap;
+}
+.check-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 7px;
+  border: 1.5px solid var(--border-med);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.18s;
+  user-select: none;
+  white-space: nowrap;
+}
+.check-btn:hover { border-color: var(--border-hard); color: var(--text-secondary); }
+.check-btn.checked-e {
+  background: var(--thm-bg);
+  border-color: var(--thm-border);
+  color: var(--thm-color);
+}
+.check-btn.checked-d {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+.chk-box {
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  border: 1.5px solid currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+}
+.check-btn.checked-e .chk-box::after,
+.check-btn.checked-d .chk-box::after { content: '✓'; }
+
+/* ══════════════════════════════════════════
+   SUIVI — SIDEBAR SCORE
+══════════════════════════════════════════ */
+.sidebar-score {
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--bg-raised);
+}
+.score-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.score-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+}
+.score-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.score-bar-bg {
+  background: var(--bg-inset);
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  margin-bottom: 7px;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--thm-color) 0%, var(--accent) 100%);
+  transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.score-sub {
+  display: flex;
+  gap: 12px;
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+.score-sub span { display: flex; align-items: center; gap: 4px; }
+.sdot { width: 6px; height: 6px; border-radius: 50%; }
+.sdot-e { background: var(--thm-color); }
+.sdot-d { background: var(--accent); }
+
+/* NAV — dots de suivi */
+.nav-item-inner { display: flex; align-items: center; gap: 8px; flex: 1; overflow: hidden; }
+.nav-dots { display: flex; gap: 3px; flex-shrink: 0; }
+.ndot { width: 5px; height: 5px; border-radius: 50%; background: var(--border-hard); }
+.ndot.ne { background: var(--thm-color); }
+.ndot.nd { background: var(--accent); }
+
+/* ══════════════════════════════════════════
+   SUIVI — DASHBOARD HOME
+══════════════════════════════════════════ */
+.dashboard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+.dash-heading {
+  font-family: 'Lora', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dash-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.metric-box {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  text-align: center;
+}
+.metric-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.mv-e  { color: var(--thm-color); }
+.mv-d  { color: var(--accent); }
+.mv-tot { color: var(--text-primary); }
+.metric-lbl { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+.chap-progress-list { border-top: 1px solid var(--border-soft); padding-top: 0.85rem; }
+.chap-prog-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.45rem 0;
+}
+.cpname {
+  font-size: 12px;
+  color: var(--text-secondary);
+  width: 130px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cpbar-bg {
+  flex: 1;
+  background: var(--bg-inset);
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+}
+.cpbar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--thm-color), var(--accent));
+  transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.cppct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════
+   CHAPTER VIEW — barre de progression en haut
+══════════════════════════════════════════ */
+.chap-progress-bar {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.cpb-label { font-size: 12px; color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+.cpb-bar-bg {
+  flex: 1;
+  background: var(--bg-inset);
+  border-radius: 4px;
+  height: 7px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+}
+.cpb-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--thm-color), var(--accent));
+  transition: width 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.cpb-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.katex-display { margin: 0.9em 0; overflow-x: auto; }
+.katex { font-size: 1.2em; }
+.content-block .katex { font-size: 1.25em; }
+.content-block .katex-display { margin: 0.8em 0; }
+
+/* ══════════════════════════════════════════
+   SIDEBAR COLLAPSE
+══════════════════════════════════════════ */
+.sidebar {
+  transition: width 0.28s cubic-bezier(0.4,0,0.2,1),
+              min-width 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+.app.sidebar-collapsed .sidebar {
+  width: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden;
+  border-right: none;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 268px;
+  z-index: 100;
+  width: 20px;
+  height: 48px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-med);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 10px;
+  transition: left 0.28s cubic-bezier(0.4,0,0.2,1), background 0.15s;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.07);
+}
+.sidebar-toggle:hover { background: var(--bg-hover); color: var(--text-primary); }
+.app.sidebar-collapsed .sidebar-toggle {
+  left: 0;
+  border-left: 1px solid var(--border-med);
+  border-radius: 0 8px 8px 0;
+}
+.toggle-icon { transition: transform 0.28s; }
+.app.sidebar-collapsed .toggle-icon { transform: rotate(180deg); }
+
+/* ══════════════════════════════════════════
+   PANNEAU CLAUDE
+══════════════════════════════════════════ */
+.claude-panel {
+  width: 0;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border-left: none;
+  transition: width 0.3s cubic-bezier(0.4,0,0.2,1),
+              min-width 0.3s cubic-bezier(0.4,0,0.2,1),
+              border-color 0.3s;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.claude-panel.open {
+  width: 420px;
+  min-width: 420px;
+  border-left: 1px solid var(--border-soft);
+}
+
+.claude-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--bg-raised);
+  flex-shrink: 0;
+  gap: 8px;
+}
+.claude-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.claude-logo {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #d97706, #dc2626);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.claude-panel-sub {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 2px;
+}
+.claude-panel-close {
+  background: none;
+  border: 1px solid var(--border-med);
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 13px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.claude-panel-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+.claude-iframe-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.claude-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: var(--bg-surface);
+}
+.claude-blocked-msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background: var(--bg-raised);
+}
+.claude-blocked-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.claude-blocked-title {
+  font-family: 'Lora', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+.claude-blocked-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.claude-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  background: #d97706;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.claude-open-btn:hover { background: #b45309; transform: translateY(-1px); }
+
+/* bouton flottant pour ouvrir Claude */
+.claude-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-med);
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+.claude-fab:hover { border-color: var(--border-hard); box-shadow: 0 6px 20px rgba(0,0,0,0.15); transform: translateY(-1px); }
+.claude-fab.panel-open { background: var(--accent-bg); border-color: var(--accent-border); color: var(--accent); }
+.fab-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: linear-gradient(135deg, #d97706, #dc2626);
+}
+
+</style>
+</head>
+<body>
+
+<div class="app" id="appRoot">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo">Maths pour Info</div>
+        <div class="sidebar-sub">Université de Genève</div>
+      </div>
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Changer le thème">☀️</button>
+    </div>
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" type="text" placeholder="Rechercher..." id="searchInput" oninput="onSearch()">
+      </div>
+    </div>
+    <div class="sidebar-score">
+      <div class="score-header">
+        <span class="score-label">Progression globale</span>
+        <span class="score-pct" id="scorePct">0%</span>
+      </div>
+      <div class="score-bar-bg">
+        <div class="score-bar-fill" id="scoreBarFill" style="width:0%"></div>
+      </div>
+      <div class="score-sub">
+        <span><span class="sdot sdot-e"></span>Énoncé su</span>
+        <span><span class="sdot sdot-d"></span>Démo sue</span>
+      </div>
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn f-all" id="fb-all" onclick="setFilter('all')">Tout</button>
+      <button class="filter-btn" id="fb-def" onclick="setFilter('definition')">Définitions</button>
+      <button class="filter-btn" id="fb-thm" onclick="setFilter('theoreme')">Théorèmes</button>
+      <button class="filter-btn" id="fb-ex" onclick="setFilter('exercice')">Exercices</button>
+    </div>
+    <nav class="nav-list" id="navList"></nav>
+  </aside>
+
+  <!-- Toggle sidebar -->
+  <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="Replier la barre">
+    <span class="toggle-icon">◀</span>
+  </button>
+
+  <!-- MAIN -->
+  <main class="main" id="mainContent"></main>
+
+  <!-- PANNEAU CLAUDE -->
+  <div class="claude-panel" id="claudePanel">
+    <div class="claude-panel-header">
+      <div class="claude-panel-title">
+        <div class="claude-logo">C</div>
+        <span>Claude</span>
+        <span class="claude-panel-sub">— assistant IA</span>
+      </div>
+      <button class="claude-panel-close" onclick="toggleClaudePanel()" title="Fermer">✕</button>
+    </div>
+    <div class="claude-iframe-wrap">
+      <div class="claude-blocked-msg" id="claudeBlockedMsg">
+        <div class="claude-blocked-icon">🤖</div>
+        <div class="claude-blocked-title">Claude intégré</div>
+        <div class="claude-blocked-desc">
+          Pour des raisons de sécurité, claude.ai ne peut pas s'afficher dans un iframe.<br><br>
+          Clique sur le bouton ci-dessous pour ouvrir Claude dans un nouvel onglet — tu peux placer les deux fenêtres côte à côte.
+        </div>
+        <a class="claude-open-btn" href="https://claude.ai" target="_blank" rel="noopener">
+          Ouvrir Claude ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB Claude -->
+  <button class="claude-fab" id="claudeFab" onclick="toggleClaudePanel()">
+    <span class="fab-dot"></span>
+    Ouvrir Claude
+  </button>
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="katexReady=true; renderMath();"></script>
+
+<script>
+const MATH_DATA = {
+  chapters: [
+    {
+      id: "chap1",
+      title: "Chapitre 1",
+      subtitle: "Topologie de ℝⁿ et fonctions continues",
+      color: "teal",
+      items: [
+        {
+          id: "def1",
+          type: "definition",
+          number: "1",
+          title: "Distance euclidienne",
+          content: "La distance euclidienne dans \\(\\mathbb{R}^n\\) est :\\[d(x, y) = \\sqrt{\\sum_{i=1}^n (x_i - y_i)^2}\\]",
+          explanation: `La distance euclidienne mesure la longueur du segment entre deux points dans \\(\\mathbb{R}^n\\). C'est la généralisation naturelle de la distance usuelle dans \\(\\mathbb{R}^2\\).
+
+**Pourquoi cette formule ?** En 2D, par Pythagore : \\(d\\big((x_1,x_2),(y_1,y_2)\\big) = \\sqrt{(x_1-y_1)^2 + (x_2-y_2)^2}\\). En \\(n\\) dimensions, on somme les carrés des différences composante par composante.
+
+**Exemple :** Dans \\(\\mathbb{R}^2\\), \\(d\\big((1,2),(4,6)\\big) = \\sqrt{(4-1)^2 + (6-2)^2} = \\sqrt{9+16} = \\sqrt{25} = 5\\).`,
+          tags: ["norme", "distance"]
+        },
+        {
+          id: "def2",
+          type: "definition",
+          number: "2",
+          title: "Norme euclidienne",
+          content: "La norme euclidienne : \\(\\|x\\|_2 = \\sqrt{\\sum_{i=1}^n x_i^2} = \\sqrt{\\langle x,x \\rangle}\\)\\[\\text{avec produit scalaire } \\langle x,y \\rangle = \\sum_{i=1}^n x_i y_i\\]",
+          explanation: `La norme mesure la "longueur" d'un vecteur. C'est la distance de \\(x\\) à l'origine.
+
+**Lien avec la distance :** \\(d(x,y) = \\|x - y\\|_2\\)
+
+**Le produit scalaire :** \\(\\langle x,y \\rangle = \\sum_i x_i y_i\\), et \\(\\|x\\|_2 = \\sqrt{\\langle x,x \\rangle}\\).
+
+**Intuition :** Si \\(x = (3,4)\\), alors \\(\\|x\\|_2 = \\sqrt{9+16} = 5\\). C'est bien la longueur de ce vecteur (triangle 3-4-5).`,
+          tags: ["norme", "produit scalaire"]
+        },
+        {
+          id: "def4",
+          type: "definition",
+          number: "4",
+          title: "Norme générale sur ℝⁿ",
+          content: "Une norme sur \\(\\mathbb{R}^n\\) est une application \\(\\|\\cdot\\| : \\mathbb{R}^n \\to \\mathbb{R}\\) vérifiant :\\[(a)\\; \\|x\\| \\geq 0 \\text{ et } \\|x\\| = 0 \\Leftrightarrow x = 0\\]\\[(b)\\; \\|\\lambda x\\| = |\\lambda|\\cdot\\|x\\|\\]\\[(c)\\; \\|x+y\\| \\leq \\|x\\| + \\|y\\| \\quad \\text{(inégalité triangulaire)}\\]",
+          explanation: `Une norme est une façon générale de mesurer des "longueurs". Les 3 propriétés sont naturelles :
+
+**(a) Positivité :** La longueur est toujours positive. Seul le vecteur nul a longueur 0.
+
+**(b) Homogénéité :** Si on étire un vecteur d'un facteur \\(\\lambda\\), sa longueur est multipliée par \\(|\\lambda|\\). Ex : \\(\\|2x\\| = 2\\|x\\|\\).
+
+**(c) Inégalité triangulaire :** Le chemin direct est plus court que le détour. Correspond au proverbe : le chemin le plus court entre deux points est la ligne droite.
+
+**Normes usuelles :**
+\\[\\|x\\|_1 = \\sum_i |x_i|, \\quad \\|x\\|_2 = \\sqrt{\\sum_i x_i^2}, \\quad \\|x\\|_\\infty = \\max_i |x_i|\\]`,
+          tags: ["norme"]
+        },
+        {
+          id: "thm1",
+          type: "theoreme",
+          number: "1",
+          title: "Inégalité de Cauchy-Schwarz",
+          content: "Pour tout \\(x, y \\in \\mathbb{R}^n\\) :\\[|\\langle x,y \\rangle| \\leq \\|x\\|_2 \\cdot \\|y\\|_2\\]",
+          explanation: `C'est une des inégalités les plus fondamentales en maths.
+
+**Idée géométrique :** \\(|\\langle x,y \\rangle| = \\|x\\|\\cdot\\|y\\|\\cdot|\\cos\\theta|\\) où \\(\\theta\\) est l'angle entre \\(x\\) et \\(y\\). Comme \\(|\\cos\\theta| \\leq 1\\), on a bien l'inégalité.
+
+**Preuve du cours (astucieuse) :** On considère \\(f(t) = \\|x - ty\\|_2^2 \\geq 0\\) pour tout \\(t \\in \\mathbb{R}\\).
+En développant :
+\\[f(t) = \\|x\\|^2 - 2t\\langle x,y \\rangle + t^2\\|y\\|^2 \\geq 0\\]
+C'est un polynôme du 2nd degré en \\(t\\), toujours positif, donc son discriminant \\(\\Delta \\leq 0\\) :
+\\[\\Delta = 4\\langle x,y\\rangle^2 - 4\\|x\\|^2\\|y\\|^2 \\leq 0 \\implies |\\langle x,y \\rangle| \\leq \\|x\\|\\cdot\\|y\\|\\]
+
+**Pourquoi \\(\\Delta \\leq 0\\) ?** Si \\(at^2 + bt + c \\geq 0\\) pour tout \\(t\\), le polynôme n'a pas de racines réelles distinctes, donc \\(\\Delta = b^2 - 4ac \\leq 0\\).`,
+          tags: ["norme", "produit scalaire", "inégalité"]
+        },
+        {
+          id: "thm2",
+          type: "theoreme",
+          number: "2",
+          title: "La norme euclidienne est bien une norme",
+          content: "\\(\\|\\cdot\\|_2\\) satisfait les 3 propriétés. En particulier l'inégalité triangulaire :\\[\\|x+y\\|_2 \\leq \\|x\\|_2 + \\|y\\|_2\\]découle de Cauchy-Schwarz.",
+          explanation: `Vérifions les 3 propriétés :
+
+**(a) Positivité :** \\(\\|x\\|_2 = \\sqrt{\\sum x_i^2} \\geq 0\\). Et \\(\\|x\\|_2 = 0 \\Leftrightarrow \\sum x_i^2 = 0 \\Leftrightarrow x = 0\\). ✓
+
+**(b) Homogénéité :** \\(\\|\\lambda x\\|_2 = \\sqrt{\\sum (\\lambda x_i)^2} = \\sqrt{\\lambda^2 \\sum x_i^2} = |\\lambda|\\cdot\\|x\\|_2\\). ✓
+
+**(c) Inégalité triangulaire** — c'est là que Cauchy-Schwarz intervient :
+\\[\\|x+y\\|_2^2 = \\langle x+y,\\ x+y \\rangle = \\|x\\|^2 + 2\\langle x,y\\rangle + \\|y\\|^2\\]
+Par CS : \\(\\langle x,y \\rangle \\leq |\\langle x,y \\rangle| \\leq \\|x\\|\\cdot\\|y\\|\\), donc :
+\\[\\|x+y\\|_2^2 \\leq \\|x\\|^2 + 2\\|x\\|\\cdot\\|y\\| + \\|y\\|^2 = \\big(\\|x\\| + \\|y\\|\\big)^2\\]
+En prenant la racine carrée : \\(\\|x+y\\|_2 \\leq \\|x\\| + \\|y\\|\\). ✓`,
+          tags: ["norme"]
+        },
+        {
+          id: "thm3",
+          type: "theoreme",
+          number: "3",
+          title: "Comparaison des normes ℓᵖ",
+          content: "Pour tout \\(x \\in \\mathbb{R}^n\\) :\\[\\|x\\|_\\infty \\leq \\|x\\|_2 \\leq \\|x\\|_1 \\leq \\sqrt{n}\\,\\|x\\|_2 \\leq n\\,\\|x\\|_\\infty\\]",
+          explanation: `Ce théorème dit que les normes \\(\\ell^p\\) se contrôlent mutuellement.
+
+**Pourquoi \\(\\|x\\|_\\infty \\leq \\|x\\|_2\\) ?**
+\\(\\|x\\|_\\infty = \\max_j |x_j|\\). Si \\(x_j\\) réalise le max, alors \\(|x_j|^2 \\leq \\sum_i x_i^2 = \\|x\\|_2^2\\). Donc \\(\\|x\\|_\\infty \\leq \\|x\\|_2\\). ✓
+
+**Pourquoi \\(\\|x\\|_2 \\leq \\|x\\|_1\\) ?**
+\\(\\|x\\|_2^2 = \\sum x_i^2 \\leq \\left(\\sum |x_i|\\right)^2 = \\|x\\|_1^2\\), donc \\(\\|x\\|_2 \\leq \\|x\\|_1\\). ✓
+
+**Pourquoi \\(\\|x\\|_1 \\leq n\\|x\\|_\\infty\\) ?**
+\\(\\|x\\|_1 = \\sum |x_i| \\leq n \\cdot \\max_i |x_i| = n\\|x\\|_\\infty\\). ✓`,
+          tags: ["norme", "comparaison"]
+        },
+        {
+          id: "def5",
+          type: "definition",
+          number: "5",
+          title: "Normes équivalentes",
+          content: "Deux normes \\(\\|\\cdot\\|_a\\) et \\(\\|\\cdot\\|_b\\) sont équivalentes s'il existe \\(C_1, C_2 > 0\\) tels que :\\[C_1\\|x\\|_a \\leq \\|x\\|_b \\leq C_2\\|x\\|_a \\quad \\forall x \\in \\mathbb{R}^n\\]",
+          explanation: `Deux normes équivalentes définissent les mêmes notions topologiques (convergence, ouvert, fermé…).
+
+**Implication cruciale :** Si \\(\\|x_k - a\\|_a \\to 0\\), alors \\(\\|x_k - a\\|_b \\to 0\\) aussi (et réciproquement).
+
+**Intuition :** Les boules des deux normes se contiennent mutuellement (à des constantes près). Elles ont des formes différentes, mais capturent le même "voisinage".
+
+**Exemple :** \\(1 \\cdot \\|x\\|_2 \\leq \\|x\\|_1 \\leq \\sqrt{n}\\,\\|x\\|_2\\), donc \\(\\|\\cdot\\|_1\\) et \\(\\|\\cdot\\|_2\\) sont équivalentes avec \\(C_1 = 1\\) et \\(C_2 = \\sqrt{n}\\).`,
+          tags: ["norme", "équivalence"]
+        },
+        {
+          id: "def6",
+          type: "definition",
+          number: "6",
+          title: "Convergence d'une suite de vecteurs",
+          content: "La suite \\((x_k)\\) converge vers \\(a\\) si :\\[\\forall\\varepsilon > 0,\\ \\exists N,\\ k > N \\Rightarrow \\|x_k - a\\| < \\varepsilon\\]On note \\(\\displaystyle\\lim_{k\\to\\infty} x_k = a\\) ou \\(x_k \\to a\\).",
+          explanation: `C'est la définition \\(\\varepsilon\\)-\\(N\\) usuelle de la convergence, mais dans \\(\\mathbb{R}^n\\).
+
+**Traduction concrète :** Aussi petit que soit le rayon \\(\\varepsilon\\) choisi, à partir d'un certain rang \\(N\\), tous les termes sont dans la boule \\(B(a, \\varepsilon)\\).
+
+**Remarque importante :** La convergence ne dépend pas du choix de la norme (car toutes les normes sont équivalentes dans \\(\\mathbb{R}^n\\)).
+
+**Exemple :** \\(x_k = \\left(\\frac{1}{k},\\, \\frac{2}{k}\\right) \\to (0,0)\\) car \\(\\|x_k\\|_2 = \\frac{\\sqrt{5}}{k} \\to 0\\).`,
+          tags: ["convergence", "suite"]
+        },
+        {
+          id: "thm4",
+          type: "theoreme",
+          number: "4",
+          title: "Critère composante par composante",
+          content: "Une suite \\((x_k)\\) dans \\(\\mathbb{R}^n\\) converge si et seulement si chacune de ses composantes converge dans \\(\\mathbb{R}\\) :\\[x_k \\to a \\iff x_{k,i} \\to a_i \\quad \\forall i = 1,\\ldots,n\\]",
+          explanation: `Ce résultat est très pratique : pour étudier la convergence d'une suite de vecteurs, il suffit d'étudier \\(n\\) suites réelles.
+
+**Preuve (idée) :** On utilise la norme \\(\\|\\cdot\\|_\\infty\\). Alors :
+\\[\\|x_k - a\\|_\\infty = \\max_i |x_{k,i} - a_i|\\]
+
+\\(\\Rightarrow\\) Si \\(\\|x_k - a\\|_\\infty < \\varepsilon\\), alors \\(|x_{k,i} - a_i| < \\varepsilon\\) pour tout \\(i\\). ✓
+
+\\(\\Leftarrow\\) Si chaque composante converge, pour \\(\\varepsilon > 0\\), il existe \\(N_i\\) tel que \\(k > N_i \\Rightarrow |x_{k,i} - a_i| < \\varepsilon\\). On prend \\(N = \\max(N_1,\\ldots,N_n)\\). ✓
+
+**Exemple :** \\(x_k = \\left(\\frac{\\cos k}{k},\\ \\frac{k}{k+1}\\right) \\to (0, 1)\\).`,
+          tags: ["convergence", "suite"]
+        },
+        {
+          id: "thm5",
+          type: "theoreme",
+          number: "5",
+          title: "Convergente ⟺ de Cauchy",
+          content: "Dans \\(\\mathbb{R}^n\\), une suite est convergente si et seulement si elle est de Cauchy :\\[\\forall\\varepsilon > 0,\\ \\exists N,\\ p,q > N \\Rightarrow \\|x_p - x_q\\| < \\varepsilon\\]",
+          explanation: `Ce théorème dit que \\(\\mathbb{R}^n\\) est **complet** : toute suite qui "voudrait converger" (suite de Cauchy) converge effectivement.
+
+**Intuition :** Une suite de Cauchy est une suite dont les termes se rapprochent les uns des autres. Dans \\(\\mathbb{R}^n\\), cela suffit pour assurer la convergence.
+
+**Différence avec \\(\\mathbb{Q}\\) :** Dans les rationnels, la suite des approximations décimales de \\(\\sqrt{2}\\) est de Cauchy dans \\(\\mathbb{Q}\\) mais \\(\\sqrt{2} \\notin \\mathbb{Q}\\).
+
+**Preuve (idée) :**
+\\(\\Rightarrow\\) : \\(\\|x_p - x_q\\| \\leq \\|x_p - a\\| + \\|a - x_q\\| < \\frac{\\varepsilon}{2} + \\frac{\\varepsilon}{2} = \\varepsilon\\). ✓
+\\(\\Leftarrow\\) : chaque composante est de Cauchy dans \\(\\mathbb{R}\\) (complet), donc converge. ✓`,
+          tags: ["convergence", "Cauchy", "complétude"]
+        },
+        {
+          id: "def8",
+          type: "definition",
+          number: "8",
+          title: "Boule ouverte",
+          content: "La boule ouverte de centre \\(a \\in \\mathbb{R}^n\\) et de rayon \\(r > 0\\) est :\\[B(a, r) = \\{x \\in \\mathbb{R}^n \\mid \\|x - a\\| < r\\}\\]",
+          explanation: `La boule ouverte est l'ensemble des points strictement à distance \\(< r\\) du centre \\(a\\).
+
+**Visualisation selon la norme :**
+La boule \\(B(0,1)\\) dans \\(\\mathbb{R}^2\\) a une forme différente selon la norme :
+\\[\\|\\cdot\\|_1 : \\text{losange (} |x_1| + |x_2| < 1\\text{)}\\]
+\\[\\|\\cdot\\|_2 : \\text{disque (} x_1^2 + x_2^2 < 1\\text{)}\\]
+\\[\\|\\cdot\\|_\\infty : \\text{carré (} \\max(|x_1|,|x_2|) < 1\\text{)}\\]
+
+**Pourquoi "ouverte" ?** La frontière (points à exactement distance \\(r\\)) n'est pas incluse (inégalité stricte \\(<\\)).`,
+          tags: ["topologie", "boule", "ouvert"]
+        },
+        {
+          id: "def10",
+          type: "definition",
+          number: "10–11",
+          title: "Voisinage, ensemble ouvert",
+          content: "\\(V\\) est un voisinage de \\(a\\) si \\(\\exists\\, r > 0\\) tel que \\(B(a,r) \\subset V\\).\\[\\text{Un ensemble } U \\text{ est ouvert si} \\quad \\forall x \\in U,\\ \\exists\\, r > 0 : B(x,r) \\subset U\\]",
+          explanation: `**Voisinage :** Un voisinage de \\(a\\) contient une boule autour de \\(a\\). On peut "se déplacer un peu" depuis \\(a\\) sans sortir du voisinage.
+
+**Ensemble ouvert :** Chaque point est "à l'intérieur" — aucun point n'est sur la frontière.
+
+**Exemples :**
+- \\((a,b)\\) est ouvert : pour \\(x \\in (a,b)\\), prendre \\(r = \\min(x-a,\\ b-x) > 0\\). ✓
+- \\([a,b]\\) n'est pas ouvert : le point \\(a\\) n'a pas de voisinage contenu dans \\([a,b]\\). ✗
+
+**Mnémonique :** Un ouvert ne contient pas sa frontière.`,
+          tags: ["topologie", "ouvert", "voisinage"]
+        },
+        {
+          id: "def12",
+          type: "definition",
+          number: "12",
+          title: "Ensemble fermé",
+          content: "Un ensemble \\(F \\subset \\mathbb{R}^n\\) est fermé si toute suite \\((x_k) \\subset F\\) convergente converge vers un point de \\(F\\) :\\[(x_k) \\subset F \\text{ et } x_k \\to x \\implies x \\in F\\]",
+          explanation: `**Intuition :** Un fermé "contient ses valeurs limites". Il ne peut pas fuir vers sa frontière.
+
+**Exemples :**
+- \\([a,b]\\) est fermé : si \\(x_n \\in [a,b]\\) et \\(x_n \\to x\\), alors \\(a \\leq x \\leq b\\). ✓
+- \\((a,b)\\) n'est pas fermé : la suite \\(x_n = a + \\tfrac{1}{n} \\in (a,b)\\) converge vers \\(a \\notin (a,b)\\). ✗
+- \\(\\{x : \\|x\\| \\leq 1\\}\\) est fermé : si \\(x_k \\to a\\), par continuité de la norme \\(\\|a\\| = \\lim\\|x_k\\| \\leq 1\\). ✓
+
+**Attention :** "Fermé" ≠ "pas ouvert". \\(\\mathbb{R}\\) et \\(\\emptyset\\) sont à la fois ouverts ET fermés.`,
+          tags: ["topologie", "fermé"]
+        },
+        {
+          id: "thm7",
+          type: "theoreme",
+          number: "7",
+          title: "Ouvert ⟺ complémentaire fermé",
+          content: "\\((a)\\) \\(F\\) fermé \\(\\Rightarrow\\) \\(F^c\\) ouvert.\\\\\\((b)\\) \\(U\\) ouvert \\(\\Rightarrow\\) \\(U^c\\) fermé.",
+          explanation: `Ce théorème établit la dualité ouvert/fermé via la complémentation.
+
+**Preuve de (a) par l'absurde :**
+Supposons \\(F\\) fermé mais \\(F^c\\) non ouvert. Alors \\(\\exists x \\in F^c\\) tel que toute boule \\(B(x, \\tfrac{1}{k})\\) intersecte \\(F\\). On choisit \\(x_k \\in F \\cap B(x, \\tfrac{1}{k})\\). Alors \\(x_k \\to x\\) et \\(x_k \\in F\\), mais \\(F\\) est fermé donc \\(x \\in F\\). Contradiction avec \\(x \\in F^c\\).
+
+**Preuve de (b) :**
+Soit \\((x_k) \\subset U^c\\) avec \\(x_k \\to a\\). Par l'absurde, si \\(a \\in U\\) (ouvert), \\(\\exists r > 0 : B(a,r) \\subset U\\). Pour \\(k\\) assez grand, \\(x_k \\in B(a,r) \\subset U\\), donc \\(x_k \\notin U^c\\). Contradiction.`,
+          tags: ["topologie", "ouvert", "fermé", "dualité"]
+        },
+        {
+          id: "thm8",
+          type: "theoreme",
+          number: "8",
+          title: "Opérations sur les ouverts et fermés",
+          content: "\\(1.\\) L'intersection finie d'ouverts est ouverte.\\\\\\(2.\\) L'union quelconque d'ouverts est ouverte.\\\\\\(3.\\) L'union finie de fermés est fermée.\\\\\\(4.\\) L'intersection quelconque de fermés est fermée.",
+          explanation: `**Règle mnémotechnique :** "Fini pour l'intersection des ouverts et l'union des fermés."
+
+**Preuve de (1) :** Soient \\(U_1,\\ldots,U_n\\) ouverts, \\(U = \\bigcap_{i=1}^n U_i\\). Pour \\(x \\in U\\) : \\(\\exists \\varepsilon_i : B(x,\\varepsilon_i) \\subset U_i\\). On pose \\(\\varepsilon = \\min(\\varepsilon_1,\\ldots,\\varepsilon_n) > 0\\). Alors \\(B(x,\\varepsilon) \\subset U_i\\) pour tout \\(i\\), donc \\(B(x,\\varepsilon) \\subset U\\). ✓
+
+**Pourquoi "finie" est nécessaire ?** Contre-exemple : \\(U_k = \\left(-\\tfrac{1}{k}, \\tfrac{1}{k}\\right)\\) est ouvert \\(\\forall k\\), mais
+\\[\\bigcap_{k=1}^\\infty U_k = \\{0\\] \\quad \\text{qui n'est pas ouvert.}\\]
+
+**(3) et (4)** se prouvent via De Morgan : \\((\\bigcap F_i)^c = \\bigcup F_i^c\\) et les \\(F_i^c\\) sont ouverts.`,
+          tags: ["topologie", "ouvert", "fermé", "opérations"]
+        },
+        {
+          id: "def_compact",
+          type: "definition",
+          number: "compact",
+          title: "Ensemble compact",
+          content: "\\(K \\subset \\mathbb{R}^n\\) est compact si et seulement si \\(K\\) est fermé et borné :\\[K \\text{ compact} \\iff K \\text{ fermé et } \\exists R > 0 : K \\subset B(0, R)\\]",
+          explanation: `**Exemples :**
+- \\([a,b] \\subset \\mathbb{R}\\) : fermé ✓ et borné ✓ → compact ✓
+- \\((a,b)\\) : non fermé ✗ → non compact ✗
+- \\(\\{x \\in \\mathbb{R}^n : \\|x\\| \\leq 1\\}\\) : fermé ✓ et borné ✓ → compact ✓
+- \\(\\mathbb{R}^n\\) entier : non borné ✗ → non compact ✗
+
+**Pourquoi c'est important ?** Les compacts ont des propriétés remarquables : toute suite admet une sous-suite convergente (Bolzano-Weierstrass), et les fonctions continues sur un compact atteignent leur maximum (Weierstrass).`,
+          tags: ["topologie", "compact"]
+        },
+        {
+          id: "thm_weierstrass",
+          type: "theoreme",
+          number: "Weierstrass",
+          title: "Théorème de Weierstrass",
+          content: "Si \\(K \\subset \\mathbb{R}^n\\) est compact et \\(f : K \\to \\mathbb{R}\\) est continue, alors \\(f\\) est bornée et atteint son maximum et son minimum :\\[\\exists\\, x_{\\min},\\, x_{\\max} \\in K : f(x_{\\min}) \\leq f(x) \\leq f(x_{\\max}) \\quad \\forall x \\in K\\]",
+          explanation: `C'est un résultat fondamental en analyse et en optimisation.
+
+**Pourquoi a-t-on besoin des deux conditions ?**
+- Si \\(K\\) non borné : \\(f(x) = x\\) sur \\(\\mathbb{R}\\) n'est pas bornée.
+- Si \\(K\\) non fermé : \\(f(x) = \\tfrac{1}{x}\\) sur \\((0,1]\\) n'est pas bornée supérieurement.
+- Si \\(f\\) non continue : \\(f = \\mathbf{1}_{\\{1\\}}\\) sur \\([0,1]\\) vaut 0 presque partout, le sup est atteint en un seul point.
+
+**Preuve (idée) :** L'image \\(f(K)\\) est compacte (fermée et bornée). Donc elle a un \\(\\sup\\) et un \\(\\inf\\) qui sont atteints car \\(f(K)\\) est fermée.
+
+**Application :** Garantit l'existence d'un optimum en optimisation sur un compact.`,
+          tags: ["compact", "continuité", "optimisation"]
+        },
+        {
+          id: "thm_normes_equiv",
+          type: "theoreme",
+          number: "éq.",
+          title: "Toutes les normes sur ℝⁿ sont équivalentes",
+          content: "Pour toute norme \\(N\\) sur \\(\\mathbb{R}^n\\), il existe \\(C_1, C_2 > 0\\) tels que :\\[C_1\\|x\\|_2 \\leq N(x) \\leq C_2\\|x\\|_2 \\quad \\forall x \\in \\mathbb{R}^n\\]",
+          explanation: `Ce résultat est spécifique à la **dimension finie** (il est faux en dimension infinie !).
+
+**Preuve (idée) :**
+1. \\(N\\) est continue car \\(|N(x) - N(x_0)| \\leq N(x-x_0) \\leq C\\|x-x_0\\|_2\\).
+2. Sur la sphère unité \\(S = \\{x : \\|x\\|_2 = 1\\}\\) (compacte !), \\(N\\) atteint son min \\(C_1 > 0\\) et max \\(C_2\\) (Weierstrass).
+3. Pour \\(x \\neq 0\\), on écrit \\(x = \\|x\\|_2 \\cdot u\\) avec \\(u = \\tfrac{x}{\\|x\\|_2} \\in S\\). Par homogénéité : \\(N(x) = \\|x\\|_2 \\cdot N(u)\\). Donc \\(C_1 \\|x\\|_2 \\leq N(x) \\leq C_2 \\|x\\|_2\\).
+
+**Conséquence cruciale :** Toutes les notions topologiques sont indépendantes du choix de la norme dans \\(\\mathbb{R}^n\\).`,
+          tags: ["norme", "équivalence", "topologie"]
+        },
+        {
+          id: "thm_cont_comp",
+          type: "theoreme",
+          number: "cont.",
+          title: "Continuité composante par composante",
+          content: "\\(f : A \\to \\mathbb{R}^m\\) est continue en \\(x_0\\) si et seulement si chacune de ses composantes \\(f_i : A \\to \\mathbb{R}\\) est continue en \\(x_0\\).",
+          explanation: `Ce résultat réduit la continuité vectorielle à la continuité scalaire.
+
+**Sens \\(\\Rightarrow\\) :** Si \\(f\\) est continue en \\(x_0\\), pour \\(\\varepsilon > 0\\), \\(\\exists \\delta : \\|x-x_0\\| < \\delta \\Rightarrow \\|f(x)-f(x_0)\\|_\\infty < \\varepsilon\\). Puisque \\(|z_i| \\leq \\max_j |z_j| = \\|z\\|_\\infty\\), on a \\(|f_i(x) - f_i(x_0)| < \\varepsilon\\). ✓
+
+**Sens \\(\\Leftarrow\\) :** Chaque \\(f_i\\) continue en \\(x_0\\) : \\(\\exists \\delta_i : \\|x-x_0\\| < \\delta_i \\Rightarrow |f_i(x) - f_i(x_0)| < \\varepsilon\\). On prend \\(\\delta = \\min(\\delta_1,\\ldots,\\delta_m)\\). Alors \\(\\|f(x)-f(x_0)\\|_\\infty = \\max_i |f_i(x)-f_i(x_0)| < \\varepsilon\\). ✓`,
+          tags: ["continuité"]
+        },
+        {
+          id: "thm_cont_suite",
+          type: "theoreme",
+          number: "cont. suite",
+          title: "Continuité par les suites",
+          content: "\\(f\\) est continue en \\(x_0\\) si et seulement si :\\[\\forall (x_k) \\subset A,\\quad x_k \\to x_0 \\implies f(x_k) \\to f(x_0)\\]Autrement dit : \\(\\displaystyle\\lim_{x \\to x_0} f(x) = f\\!\\left(\\lim_{x\\to x_0} x\\right)\\).",
+          explanation: `Cette caractérisation est souvent plus pratique que la définition \\(\\varepsilon\\text{-}\\delta\\).
+
+**Pour prouver la continuité :** Montrer que \\(x_k \\to x_0 \\Rightarrow f(x_k) \\to f(x_0)\\).
+
+**Pour prouver la non-continuité :** Trouver deux suites \\((x_k)\\) et \\((y_k)\\) qui tendent vers \\(x_0\\), mais telles que \\(f(x_k)\\) et \\(f(y_k)\\) tendent vers des limites différentes.
+
+**Exemple classique :** \\(f(x_1,x_2) = \\dfrac{x_1 x_2}{x_1^2 + x_2^2}\\) pour \\((x_1,x_2) \\neq (0,0)\\).
+- Chemin \\(x_1 = x_2 = t \\to 0\\) : \\(f(t,t) = \\dfrac{t^2}{2t^2} = \\dfrac{1}{2}\\)
+- Chemin \\(x_2 = -x_1 = t \\to 0\\) : \\(f(t,-t) = -\\dfrac{1}{2}\\)
+
+Les limites diffèrent, donc \\(f\\) n'est pas continue en \\((0,0)\\).`,
+          tags: ["continuité", "suite"]
+        },
+        {
+          id: "def_conv_unif",
+          type: "definition",
+          number: "conv. unif.",
+          title: "Convergence uniforme",
+          content: "Une suite de fonctions \\(f_k : A \\to \\mathbb{R}^m\\) converge uniformément vers \\(f\\) si :\\[\\forall\\varepsilon > 0,\\ \\exists N,\\ k \\geq N \\text{ et } \\forall x \\in A \\implies \\|f_k(x) - f(x)\\| < \\varepsilon\\]Critère pratique : \\(f_k \\rightrightarrows f \\iff \\displaystyle\\sup_{x \\in A}\\|f_k(x) - f(x)\\| \\to 0\\).",
+          explanation: `**Différence avec la convergence simple :**
+- Convergence simple : pour chaque \\(x\\) fixé, \\(f_k(x) \\to f(x)\\). Le \\(N\\) peut dépendre de \\(x\\).
+- Convergence uniforme : le même \\(N\\) fonctionne pour **tous** les \\(x\\) simultanément.
+
+**Exemple (cours) :** \\(f_k(x) = x^k\\) sur \\([0,1]\\).
+\\[\\text{Limite simple : } f(x) = \\begin{cases} 0 & x \\in [0,1) \\\\ 1 & x = 1 \\end{cases} \\quad \\text{(non continue !)}\\]
+\\[\\sup_{x \\in (0,1]} |f_k(x) - f(x)| = \\sup_{x \\in (0,1)} x^k = 1 \\not\\to 0\\]
+Donc la convergence n'est pas uniforme sur \\((0,1]\\).
+
+**Théorème clé :** Si les \\(f_k\\) sont continues et \\(f_k \\rightrightarrows f\\), alors \\(f\\) est continue.`,
+          tags: ["convergence", "uniforme", "continuité"]
+        }
+      ]
+    },
+    {
+      id: "chap2",
+      title: "Chapitre 2",
+      subtitle: "Calcul matriciel",
+      color: "purple",
+      items: [
+        {
+          id: "def2_3",
+          type: "definition",
+          number: "2.3",
+          title: "Valeurs et vecteurs propres",
+          content: "\\(\\lambda \\in \\mathbb{C}\\) est une valeur propre de \\(A \\in \\mathbb{R}^{n\\times n}\\) si \\(\\exists\\, v \\neq 0\\) tel que \\(Av = \\lambda v\\). \\(v\\) est un vecteur propre associé.\\[\\text{Caractérisation : } \\lambda \\text{ valeur propre} \\iff \\det(A - \\lambda I) = 0\\]Le polynôme caractéristique est \\(p_A(\\lambda) = \\det(A - \\lambda I)\\).",
+          explanation: `**Intuition :** Un vecteur propre est un vecteur que \\(A\\) ne fait que "étirer" sans changer sa direction. \\(\\lambda\\) est le facteur d'étirement.
+
+**Caractérisations équivalentes :**
+\\[Av = \\lambda v \\iff (A - \\lambda I)v = 0 \\iff \\det(A - \\lambda I) = 0\\]
+
+**Polynôme caractéristique :** \\(p_A(\\lambda) = \\det(A - \\lambda I)\\) est de degré \\(n\\). Ses racines dans \\(\\mathbb{C}\\) sont exactement les valeurs propres.
+
+**Remarque :** Même si \\(A\\) est réelle, ses valeurs propres peuvent être complexes, par paires conjuguées \\(\\lambda = a+ib\\) et \\(\\bar\\lambda = a-ib\\).
+
+**Exemple :** \\(A = \\begin{pmatrix}2 & 1 \\\\ 0 & 3\\end{pmatrix}\\). \\(p_A(\\lambda) = (2-\\lambda)(3-\\lambda) = 0 \\Rightarrow \\lambda_1 = 2,\\ \\lambda_2 = 3\\).`,
+          tags: ["valeur propre", "vecteur propre", "polynôme caractéristique"]
+        },
+        {
+          id: "thm2_5",
+          type: "theoreme",
+          number: "2.5",
+          title: "Forme normale de Schur (complexe)",
+          content: "Pour toute \\(A \\in \\mathbb{C}^{n\\times n}\\), il existe \\(U\\) unitaire tel que :\\[U^* A U = T \\quad \\text{triangulaire supérieure}\\]avec les valeurs propres \\(\\lambda_1,\\ldots,\\lambda_n\\) sur la diagonale.",
+          explanation: `**Pourquoi c'est puissant ?** Toute matrice peut être "triangularisée" par changement de base orthonormée (unitaire).
+
+**Preuve par récurrence :**
+- \\(n=1\\) : trivial.
+- Supposons vrai pour l'ordre \\(n-1\\). Soit \\(\\lambda_1 \\in \\mathbb{C}\\) valeur propre avec vecteur propre \\(v_1\\), \\(\\|v_1\\| = 1\\).
+  1. On complète \\(v_1\\) en une base orthonormée \\((v_1, w_2,\\ldots,w_n)\\) → matrice \\(U_1\\).
+  2. \\(U_1^* A U_1 = \\begin{pmatrix}\\lambda_1 & * \\\\ 0 & B\\end{pmatrix}\\) où \\(B\\) est \\((n-1)\\times(n-1)\\).
+  3. Par hypothèse de récurrence, \\(\\exists U_2\\) unitaire tel que \\(U_2^* B U_2\\) soit triangulaire.
+  4. \\(U = U_1 \\cdot \\mathrm{diag}(1, U_2)\\) est unitaire et \\(U^* A U\\) est triangulaire.`,
+          tags: ["Schur", "valeur propre", "décomposition"]
+        },
+        {
+          id: "def2_6",
+          type: "definition",
+          number: "2.6",
+          title: "Matrice normale",
+          content: "\\(A \\in \\mathbb{C}^{n\\times n}\\) est normale si :\\[AA^* = A^*A\\]Cas particuliers : symétrique réelle \\((A = A^T)\\), antisymétrique \\((A = -A^T)\\), hermitienne \\((A = A^*)\\), unitaire \\((U^*U = I)\\).",
+          explanation: `**Cas particuliers importants :**
+\\[A \\text{ réelle symétrique} \\Rightarrow A = A^T \\Rightarrow A \\text{ normale}\\]
+\\[A \\text{ unitaire} \\Rightarrow U^*U = I \\Rightarrow U \\text{ normale}\\]
+
+**Pourquoi cette notion ?** Les matrices normales sont exactement celles qui sont diagonalisables dans une base orthonormée (Thm spectral).
+
+**Contre-exemple de matrice non normale :** \\(A = \\begin{pmatrix}0 & 1 \\\\ 0 & 0\\end{pmatrix}\\).
+\\[AA^* = \\begin{pmatrix}1 & 0 \\\\ 0 & 0\\end{pmatrix} \\neq \\begin{pmatrix}0 & 0 \\\\ 0 & 1\\end{pmatrix} = A^*A\\]`,
+          tags: ["matrice normale", "adjointe"]
+        },
+        {
+          id: "thm2_7",
+          type: "theoreme",
+          number: "2.7",
+          title: "Théorème spectral (complexe)",
+          content: "Si \\(A \\in \\mathbb{C}^{n\\times n}\\) est normale, il existe \\(U\\) unitaire tel que :\\[U^* A U = \\mathrm{diag}(\\lambda_1,\\ldots,\\lambda_n)\\]Les colonnes de \\(U\\) sont les vecteurs propres, orthogonaux entre eux.",
+          explanation: `**C'est LE théorème spectral :** les matrices normales sont exactement les unitairement diagonalisables.
+
+**Preuve (idée) :**
+1. Par Schur : \\(\\exists U\\) unitaire, \\(S = U^*AU\\) triangulaire sup.
+2. \\(A\\) normale \\(\\Rightarrow\\) \\(S\\) normale : \\(S^*S = U^*A^*AU = U^*AA^*U = SS^*\\). ✓
+3. On montre qu'une matrice triangulaire normale est diagonale. En comparant \\((SS^*)_{11} = (S^*S)_{11}\\) :
+\\[|s_{11}|^2 = \\sum_k |s_{k1}|^2 \\geq |s_{11}|^2 \\implies s_{k1} = 0 \\text{ pour } k \\neq 1\\]
+On continue par récurrence sur la taille.`,
+          tags: ["théorème spectral", "diagonalisation", "matrice normale"]
+        },
+        {
+          id: "thm2_8",
+          type: "theoreme",
+          number: "2.8",
+          title: "Forme de Schur réelle",
+          content: "Pour \\(A \\in \\mathbb{R}^{n\\times n}\\), \\(\\exists Q\\) orthogonale réelle telle que \\(Q^T A Q\\) est triangulaire par blocs, avec blocs \\(1 \\times 1\\) (valeurs propres réelles) et \\(2 \\times 2\\) (paires de valeurs propres complexes conjuguées).",
+          explanation: `**Pourquoi des blocs \\(2 \\times 2\\) ?** Quand \\(A\\) est réelle avec des valeurs propres complexes \\(\\lambda = a \\pm ib\\), on ne peut pas les diagonaliser avec des matrices réelles, mais on peut les regrouper en blocs :
+\\[\\begin{pmatrix}a & b \\\\ -b & a\\end{pmatrix}\\]
+Ce bloc correspond à une rotation-dilatation dans \\(\\mathbb{R}^2\\) d'angle \\(\\arctan(b/a)\\) et de module \\(|\\lambda| = \\sqrt{a^2+b^2}\\).
+
+**Usage pratique :** Permet de faire des calculs réels même quand les valeurs propres sont complexes.`,
+          tags: ["Schur réel", "valeur propre", "décomposition"]
+        },
+        {
+          id: "prop2_9",
+          type: "theoreme",
+          number: "2.9",
+          title: "Théorème spectral réel",
+          content: "Si \\(A \\in \\mathbb{R}^{n\\times n}\\) est symétrique, il existe \\(Q\\) orthogonale réelle telle que :\\[Q^T A Q = \\mathrm{diag}(\\lambda_1,\\ldots,\\lambda_n) \\quad \\text{avec } \\lambda_i \\in \\mathbb{R}\\]",
+          explanation: `**C'est le théorème spectral le plus utilisé en pratique.**
+
+**Preuve que les valeurs propres sont réelles :** Soit \\(Av = \\lambda v\\) avec \\(v \\neq 0\\).
+\\[v^* A v = \\lambda \\|v\\|^2\\]
+Comme \\(A\\) est réelle symétrique : \\(v^*Av = \\overline{v^*Av} \\in \\mathbb{R}\\), donc \\(\\lambda = \\dfrac{v^*Av}{\\|v\\|^2} \\in \\mathbb{R}\\). ✓
+
+**Conséquence :** Pas de blocs \\(2\\times 2\\) dans la forme de Schur réelle → directement diagonale.
+
+**Applications :** Optimisation (hessienne), physique (modes de vibration), ML (PCA).`,
+          tags: ["théorème spectral", "matrice symétrique", "valeur propre réelle"]
+        },
+        {
+          id: "def2_10",
+          type: "definition",
+          number: "2.10",
+          title: "Matrice définie positive",
+          content: "\\(A = A^T \\in \\mathbb{R}^{n\\times n}\\) est définie positive si :\\[x^T A x > 0 \\quad \\forall x \\neq 0\\]Elle est semi-définie positive si \\(x^T A x \\geq 0\\) pour tout \\(x\\).",
+          explanation: `**Intuition :** \\(x^T A x\\) est une forme quadratique. Définie positive signifie que la surface \\(z = x^T A x\\) est un "bol" pointant vers le haut.
+
+**Exemples :**
+- \\(A = I\\) : \\(x^T I x = \\|x\\|^2 > 0\\). ✓ (définie positive)
+- \\(A = \\begin{pmatrix}1 & 0 \\\\ 0 & -1\\end{pmatrix}\\) : \\(x^T A x = x_1^2 - x_2^2\\). Si \\(x = (0,1)\\), \\(x^T A x = -1 < 0\\). ✗
+
+**Critère via les valeurs propres (Thm 2.13) :**
+\\[A \\text{ def. pos.} \\iff \\lambda_i > 0 \\text{ pour tout } i\\]
+\\[A \\text{ semi-def. pos.} \\iff \\lambda_i \\geq 0 \\text{ pour tout } i\\]`,
+          tags: ["définie positive", "forme quadratique"]
+        },
+        {
+          id: "thm2_13",
+          type: "theoreme",
+          number: "2.13",
+          title: "Caractérisation par les valeurs propres",
+          content: "Soit \\(A\\) symétrique réelle. Alors :\\[(a)\\; A \\text{ définie positive} \\iff \\lambda_i > 0 \\; \\forall i\\]\\[(b)\\; A \\text{ semi-définie positive} \\iff \\lambda_i \\geq 0 \\; \\forall i\\]",
+          explanation: `**Preuve via le théorème spectral :**
+Par le théorème spectral, \\(\\exists Q\\) orthogonale telle que \\(Q^T A Q = D = \\mathrm{diag}(\\lambda_1,\\ldots,\\lambda_n)\\). Posons \\(y = Q^T x\\) (comme \\(Q\\) inversible, \\(x \\neq 0 \\iff y \\neq 0\\)) :
+\\[x^T A x = x^T Q D Q^T x = y^T D y = \\sum_i \\lambda_i y_i^2\\]
+
+**(a) \\(\\Rightarrow\\) :** Soit \\(v_i\\) le vecteur propre unitaire. \\(v_i^T A v_i = \\lambda_i > 0\\). ✓
+
+**(a) \\(\\Leftarrow\\) :** Si tous \\(\\lambda_i > 0\\), pour \\(x \\neq 0\\), \\(y = Q^T x \\neq 0\\), donc \\(\\exists\\, y_j \\neq 0\\) :
+\\[x^T A x = \\sum_i \\lambda_i y_i^2 \\geq \\min_i(\\lambda_i) \\cdot \\|y\\|^2 > 0\\] ✓`,
+          tags: ["définie positive", "valeur propre", "critère"]
+        },
+        {
+          id: "def_norme_op",
+          type: "definition",
+          number: "norme-op.",
+          title: "Norme d'opérateur",
+          content: "\\[\\|A\\| = \\sup_{\\|x\\|=1} \\|Ax\\| = \\sup_{x \\neq 0} \\frac{\\|Ax\\|}{\\|x\\|}\\]C'est le plus petit \\(C\\) tel que \\(\\|Ax\\| \\leq C\\|x\\|\\) pour tout \\(x\\).",
+          explanation: `**Intuition :** \\(\\|A\\|\\) mesure le "facteur d'amplification maximal" de \\(A\\).
+
+**Propriétés clés :**
+\\[\\|A\\| \\geq 0,\\quad \\|\\lambda A\\| = |\\lambda|\\|A\\|,\\quad \\|A+B\\| \\leq \\|A\\|+\\|B\\|\\]
+\\[\\|AB\\| \\leq \\|A\\|\\cdot\\|B\\| \\quad \\text{(sous-multiplicativité)}\\]
+
+**Formules explicites :**
+\\[\\|A\\|_1 = \\max_j \\sum_i |a_{ij}| \\quad \\text{(max des sommes de colonnes)}\\]
+\\[\\|A\\|_\\infty = \\max_i \\sum_j |a_{ij}| \\quad \\text{(max des sommes de lignes)}\\]
+\\[\\|A\\|_2 = \\sqrt{\\lambda_{\\max}(A^T A)} \\quad \\text{(plus grande valeur singulière)}\\]`,
+          tags: ["norme matricielle", "opérateur"]
+        },
+        {
+          id: "thm2_18",
+          type: "theoreme",
+          number: "2.18",
+          title: "Décomposition en valeurs singulières (SVD)",
+          content: "Pour \\(A \\in \\mathbb{R}^{m\\times n}\\), il existe \\(U \\in \\mathbb{R}^{m\\times m}\\) et \\(V \\in \\mathbb{R}^{n\\times n}\\) orthogonales et \\(\\Sigma\\) diagonale tels que :\\[A = U\\Sigma V^T\\]Les \\(\\sigma_i = \\Sigma_{ii} \\geq 0\\) sont les valeurs singulières de \\(A\\).",
+          explanation: `**La décomposition la plus générale :** La SVD fonctionne pour toute matrice rectangulaire.
+
+**Interprétation géométrique :** Toute transformation linéaire = rotation \\(V^T\\) → étirement \\(\\Sigma\\) → rotation \\(U\\).
+
+**Lien avec les valeurs propres :**
+\\[A^T A = V \\Sigma^T U^T U \\Sigma V^T = V (\\Sigma^T\\Sigma) V^T\\]
+Les valeurs singulières : \\(\\sigma_i = \\sqrt{\\lambda_i(A^T A)}\\).
+
+**Applications concrètes :**
+- \\(\\|A\\|_2 = \\sigma_{\\max}\\) (plus grande valeur singulière)
+- Compression d'images : garder les \\(k\\) plus grandes valeurs singulières
+- PCA (Analyse en Composantes Principales)
+- Résolution de systèmes surdéterminés (moindres carrés)`,
+          tags: ["SVD", "valeur singulière", "décomposition"]
+        },
+        {
+          id: "def2_19",
+          type: "definition",
+          number: "2.19",
+          title: "Forme quadratique",
+          content: "Une forme quadratique (avec terme affine) s'écrit :\\[f(x) = x^T A x + b^T x + c \\quad \\text{avec } A = A^T \\in \\mathbb{R}^{n\\times n}\\]Classification selon les signes des valeurs propres de \\(A\\) :\\[\\text{elliptique (signes +) / hyperbolique (signes ±) / parabolique (un } \\lambda_i = 0\\text{)}\\]",
+          explanation: `**Cas \\(n=2\\) :** \\(f(x_1,x_2) = \\alpha x_1^2 + 2\\beta x_1 x_2 + \\gamma x_2^2 + \\delta x_1 + \\varepsilon x_2 + g\\) avec \\(A = \\begin{pmatrix}\\alpha & \\beta \\\\ \\beta & \\gamma\\end{pmatrix}\\).
+
+**Classification :**
+- *Elliptique* : tous les signes identiques → ellipses, paraboloïdes elliptiques
+- *Hyperbolique* : signes mixtes → hyperboles, points-selle
+- *Parabolique* : au moins un \\(\\lambda_i = 0\\) → paraboles, cylindres
+
+**Diagonalisation :** Par le théorème spectral, dans la base des vecteurs propres, la forme devient "pure" :
+\\[f(\\tilde{y}) = \\sum_i \\lambda_i \\tilde{y}_i^2 + \\cdots \\quad \\text{(que des carrés)}\\]
+
+**Applications :** Classification des points critiques (hessienne), géométrie des coniques et quadriques.`,
+          tags: ["forme quadratique", "classification", "conique"]
+        }
+      ]
+    },
+    {
+      id: "chap3",
+      title: "Chapitre 3",
+      subtitle: "Calcul différentiel",
+      color: "coral",
+      items: [
+        {
+          id: "def3_1",
+          type: "definition",
+          number: "3.1",
+          title: "Dérivée partielle et matrice jacobienne",
+          content: "La dérivée partielle de \\(F\\) par rapport à \\(x_j\\) en \\(a\\) :\\[\\partial_j F(a) = \\lim_{t\\to 0} \\frac{F(a + te_j) - F(a)}{t}\\]La matrice jacobienne de \\(F : U \\to \\mathbb{R}^m\\) est la matrice \\(m \\times n\\) :\\[F'(a) = \\bigl[\\partial_j f_i(a)\\bigr]_{i,j}\\]",
+          explanation: `**Intuition :** On "gèle" toutes les variables sauf \\(x_j\\), et on dérive par rapport à \\(x_j\\) seul. C'est une dérivée classique 1D.
+
+**Comment calculer ?** Traiter toutes les autres variables comme des constantes.
+
+**Exemple du cours :** \\(f(x_1,x_2) = e^{-x_1^2 - x_2^2}\\)
+\\[\\partial_1 f = -2x_1\\, e^{-x_1^2 - x_2^2}, \\qquad \\partial_2 f = -2x_2\\, e^{-x_1^2 - x_2^2}\\]
+
+**Notations :** \\(\\partial_j F,\\ \\dfrac{\\partial F}{\\partial x_j},\\ D_j F,\\ F_{x_j}\\) sont toutes équivalentes.
+
+**Gradient :** Pour \\(f : U \\to \\mathbb{R}\\), la matrice jacobienne est le vecteur ligne \\(f'(a) = (\\partial_1 f(a), \\ldots, \\partial_n f(a))\\), et le gradient \\(\\nabla f(a) = f'(a)^T\\).`,
+          tags: ["dérivée partielle", "jacobienne"]
+        },
+        {
+          id: "def3_3",
+          type: "definition",
+          number: "3.3",
+          title: "Dérivée directionnelle et gradient",
+          content: "La dérivée directionnelle de \\(F\\) en \\(a\\) selon \\(v\\) :\\[D_v F(a) = \\lim_{t\\to 0} \\frac{F(a+tv) - F(a)}{t}\\]Pour \\(f : U \\to \\mathbb{R}\\) différentiable, le gradient \\(\\nabla f(a) = (\\partial_1 f(a),\\ldots,\\partial_n f(a))^T\\) vérifie :\\[D_v f(a) = \\langle \\nabla f(a),\\, v \\rangle\\]",
+          explanation: `**Intuition :** La dérivée directionnelle mesure le taux de variation de \\(f\\) dans la direction \\(v\\). Si \\(v = e_j\\), on retrouve \\(\\partial_j f\\).
+
+**Gradient :** \\(\\nabla f(a)\\) pointe dans la direction de plus forte montée. Sa norme \\(\\|\\nabla f(a)\\|\\) est le taux de montée maximal.
+
+**Formule \\(D_v f = \\langle \\nabla f, v \\rangle\\) :** Valable quand \\(f\\) est différentiable (pas seulement quand les dérivées partielles existent !).
+
+**Application :** Pour maximiser \\(D_v f\\) avec \\(\\|v\\| = 1\\) : par Cauchy-Schwarz, \\(D_v f = \\langle \\nabla f, v \\rangle \\leq \\|\\nabla f\\|\\). Le maximum est atteint pour \\(v = \\dfrac{\\nabla f}{\\|\\nabla f\\|}\\).
+
+**⚠ Attention :** L'existence de toutes les dérivées directionnelles n'implique PAS la différentiabilité !`,
+          tags: ["dérivée directionnelle", "gradient"]
+        },
+        {
+          id: "def3_4",
+          type: "definition",
+          number: "3.4",
+          title: "Différentiabilité",
+          content: "\\(F : U \\to \\mathbb{R}^m\\) est différentiable en \\(a \\in U\\) s'il existe \\(L\\) linéaire et \\(r\\) continue en \\(0\\) avec \\(r(0)=0\\) tels que :\\[F(a+h) = F(a) + L(h) + r(h)\\,\\|h\\|\\]On note alors \\(L = F'(a)\\cdot h\\) (la différentielle).",
+          explanation: `**Intuition géométrique :** \\(F\\) est différentiable en \\(a\\) si on peut l'approximer localement par une application affine :
+\\[F(a+h) \\approx F(a) + F'(a)\\cdot h \\quad \\text{quand } h \\to 0\\]
+Le reste \\(r(h)\\|h\\|\\) est "petit devant \\(\\|h\\|\\)".
+
+**Lien avec les dérivées partielles (Prop 3.5) :** Si \\(F\\) est différentiable en \\(a\\), alors toutes les dérivées partielles existent et \\(F'(a)\\) est la matrice jacobienne.
+
+**⚠ La réciproque est fausse :** Les dérivées partielles peuvent exister sans que \\(F\\) soit différentiable.
+
+**Exemple (cours) :** \\(f(x_1,x_2) = \\dfrac{x_1 x_2}{x_1^2+x_2^2}\\) — les dérivées partielles existent en \\((0,0)\\) mais \\(f\\) n'est même pas continue en \\((0,0)\\).
+
+**Plan tangent :** Pour \\(f : \\mathbb{R}^2 \\to \\mathbb{R}\\) :
+\\[z = f(a) + \\partial_1 f(a)(x_1-a_1) + \\partial_2 f(a)(x_2-a_2)\\]`,
+          tags: ["différentiabilité", "différentielle", "linéarisation"]
+        },
+        {
+          id: "thm3_7",
+          type: "theoreme",
+          number: "3.7",
+          title: "Critère C¹ de différentiabilité",
+          content: "Si \\(F : U \\to \\mathbb{R}^m\\) est telle que toutes ses dérivées partielles existent dans un voisinage de \\(a\\) et sont continues en \\(a\\), alors \\(F\\) est différentiable en \\(a\\).",
+          explanation: `**Résumé :** Dérivées partielles continues \\(\\Rightarrow\\) différentiable.
+
+**C'est le critère pratique :** En pratique, on montre la différentiabilité en vérifiant que les dérivées partielles sont continues (par les formules habituelles de dérivation).
+
+**Preuve (idée en 2D) :**
+\\[f(a+h) - f(a) = \\underbrace{[f(a_1+h_1, a_2+h_2) - f(a_1, a_2+h_2)]}_{\\text{TAF sur } x_1} + \\underbrace{[f(a_1, a_2+h_2) - f(a_1, a_2)]}_{\\text{TAF sur } x_2}\\]
+On applique le TAF à chaque crochet :
+\\[= \\partial_1 f(\\xi_1, a_2+h_2)\\cdot h_1 + \\partial_2 f(a_1, \\xi_2)\\cdot h_2\\]
+\\[= \\partial_1 f(a)\\cdot h_1 + \\partial_2 f(a)\\cdot h_2 + \\underbrace{[\\partial_1 f(\\xi_1,\\ldots) - \\partial_1 f(a)]h_1 + \\ldots}_{\\to 0 \\text{ par continuité}}\\]`,
+          tags: ["différentiabilité", "C¹", "critère"]
+        },
+        {
+          id: "thm3_8",
+          type: "theoreme",
+          number: "3.8",
+          title: "Règle de chaîne",
+          content: "Si \\(F : U \\to \\mathbb{R}^m\\) est différentiable en \\(a\\) et \\(G : V \\to \\mathbb{R}^p\\) est différentiable en \\(F(a)\\), alors \\(G \\circ F\\) est différentiable en \\(a\\) et :\\[(G \\circ F)'(a) = G'(F(a)) \\cdot F'(a)\\](produit des matrices jacobiennes)",
+          explanation: `**Intuition :** La dérivée de la composée est le produit des dérivées. Généralise \\((f \\circ g)'(x) = f'(g(x))\\cdot g'(x)\\).
+
+**En coordonnées :** Si \\(z = G(y)\\) et \\(y = F(x)\\) :
+\\[\\frac{\\partial z_i}{\\partial x_k} = \\sum_j \\frac{\\partial z_i}{\\partial y_j}\\cdot\\frac{\\partial y_j}{\\partial x_k}\\]
+
+**Exemple du cours (mouvement en polaires) :** \\(r(t),\\, \\theta(t) \\mapsto (x(t), y(t)) = (r\\cos\\theta,\\, r\\sin\\theta)\\)
+\\[x'(t) = \\cos(\\theta)\\cdot r'(t) - r\\sin(\\theta)\\cdot\\theta'(t)\\]
+\\[y'(t) = \\sin(\\theta)\\cdot r'(t) + r\\cos(\\theta)\\cdot\\theta'(t)\\]
+
+**Preuve (idée) :** On substitue l'expansion de \\(F\\) dans celle de \\(G\\). Les termes d'erreur restent négligeables.`,
+          tags: ["règle de chaîne", "composée", "jacobienne"]
+        },
+        {
+          id: "def3_9",
+          type: "definition",
+          number: "3.9",
+          title: "Dérivées d'ordre supérieur et hessienne",
+          content: "Les dérivées partielles d'ordre 2 : \\(\\partial_{ij} f = \\partial_i(\\partial_j f)\\).\\\\La matrice hessienne :\\[Hf(x) = [\\partial_{ij} f(x)]_{i,j} \\quad \\text{(matrice } n\\times n \\text{ symétrique si } f \\in C^2\\text{)}\\]La dérivée seconde directionnelle : \\(D_h^2 f(a) = h^T Hf(a)\\, h\\).",
+          explanation: `**Exemple :** \\(f(x,y) = x^2 y^3\\)
+\\[\\partial_x f = 2xy^3, \\quad \\partial_y f = 3x^2y^2\\]
+\\[\\partial_{xx} f = 2y^3, \\quad \\partial_{yy} f = 6xy, \\quad \\partial_{xy} f = \\partial_{yx} f = 6xy^2\\]
+
+**Théorème de Schwarz (Thm 3.10) :** Si \\(\\partial_x f,\\ \\partial_y f,\\ \\partial_{yx} f\\) existent dans un voisinage de \\((x_0,y_0)\\) et \\(\\partial_{yx} f\\) est continue en \\((x_0,y_0)\\), alors :
+\\[\\partial_{xy} f(x_0,y_0) = \\partial_{yx} f(x_0,y_0)\\]
+
+**Conséquence :** Pour \\(f \\in C^2\\), \\(Hf\\) est symétrique. On peut permuter l'ordre des dérivations.
+
+**Utilité :** \\(D_h^2 f(a) = h^T Hf(a)\\, h\\) est la forme quadratique associée à \\(Hf\\). Son signe détermine la nature des points critiques.`,
+          tags: ["hessienne", "dérivées d'ordre 2", "Schwarz"]
+        },
+        {
+          id: "thm3_12",
+          type: "theoreme",
+          number: "3.12",
+          title: "Formule de Taylor ordre 2",
+          content: "Si \\(f : U \\to \\mathbb{R}\\) est de classe \\(C^3\\), alors pour tout \\(h \\in \\mathbb{R}^n\\) tel que \\([a, a+h] \\subset U\\) :\\[f(a+h) = f(a) + \\nabla f(a)\\cdot h + \\tfrac{1}{2}\\, h^T Hf(a)\\, h + O(\\|h\\|^3), \\quad h \\to 0\\]",
+          explanation: `**Généralise Taylor à plusieurs variables.**
+
+**Signification de chaque terme :**
+\\[\\underbrace{f(a)}_{\\text{valeur}} + \\underbrace{\\nabla f(a)\\cdot h}_{\\text{plan tangent}} + \\underbrace{\\tfrac{1}{2}h^T Hf(a)\\,h}_{\\text{courbure}} + \\underbrace{O(\\|h\\|^3)}_{\\text{reste}}\\]
+
+**Preuve (idée) :** On pose \\(g(t) = f(a + th)\\) et on applique Taylor 1D à \\(g\\) :
+\\[g(1) = g(0) + g'(0) + \\tfrac{1}{2}g''(0) + O(1)\\]
+Par la règle de chaîne : \\(g'(t) = D_h f(a+th)\\), \\(g''(t) = D_h^2 f(a+th)\\).
+
+**Application — classification des points critiques :**
+Si \\(\\nabla f(a) = 0\\) (point critique), le comportement est déterminé par \\(h^T Hf(a)\\,h\\) :
+\\[Hf(a) \\text{ def. pos.} \\Rightarrow \\text{minimum local}\\]
+\\[Hf(a) \\text{ def. nég.} \\Rightarrow \\text{maximum local}\\]
+\\[Hf(a) \\text{ indéfinie} \\Rightarrow \\text{point-selle}\\]`,
+          tags: ["Taylor", "approximation", "hessienne"]
+        },
+        {
+          id: "thm3_16",
+          type: "theoreme",
+          number: "3.16",
+          title: "Inégalité des accroissements finis",
+          content: "Soit \\(U \\subset \\mathbb{R}^n\\) convexe et ouvert, \\(F : U \\to \\mathbb{R}^m\\) différentiable. Si \\(\\|F'(x)\\| \\leq M\\) pour tout \\(x \\in U\\), alors :\\[\\|F(b) - F(a)\\| \\leq M\\,\\|b - a\\| \\quad \\forall a, b \\in U\\]",
+          explanation: `**Généralise le TAF :** En 1D, \\(|f(b) - f(a)| \\leq \\max|f'| \\cdot |b-a|\\).
+
+**⚠ Pas d'égalité en général :** Il n'existe pas forcément \\(c\\) tel que \\(F(b) - F(a) = F'(c)(b-a)\\) (différence de vecteurs).
+
+**Preuve (astucieuse) :**
+1. Soit \\(u = F(b) - F(a) \\in \\mathbb{R}^m\\). On pose \\(\\varphi(t) = \\langle u, F(a + t(b-a)) \\rangle\\).
+2. Par TAF 1D : \\(\\varphi(1) - \\varphi(0) = \\varphi'(\\theta)\\) pour un \\(\\theta \\in (0,1)\\).
+3. Par la règle de chaîne : \\(\\varphi'(t) = \\langle u, F'(a+t(b-a))\\cdot(b-a) \\rangle\\).
+4. D'où : \\(\\|F(b)-F(a)\\|^2 = \\langle u,\\ F(b)-F(a) \\rangle = \\varphi'(\\theta) \\leq \\|u\\|\\cdot M\\cdot\\|b-a\\|\\).
+5. On divise par \\(\\|u\\|\\).
+
+**Convexité nécessaire :** Pour que \\(a + t(b-a) \\in U\\) pour tout \\(t \\in [0,1]\\).`,
+          tags: ["accroissements finis", "TAF", "Lipschitz"]
+        },
+        {
+          id: "def3_15",
+          type: "definition",
+          number: "3.15",
+          title: "Ensemble convexe",
+          content: "\\(U \\subset \\mathbb{R}^n\\) est convexe si :\\[\\forall a, b \\in U,\\ \\forall t \\in [0,1] : \\quad a + t(b-a) \\in U\\](le segment \\([a,b]\\) est contenu dans \\(U\\))",
+          explanation: `**Intuition :** Un ensemble convexe est "sans creux". Pour toute paire de points, le segment qui les relie est entièrement dans l'ensemble.
+
+**Exemples convexes :** Boules, intervalles, demi-espaces \\(\\{x : c^T x \\leq d\\}\\), sous-espaces vectoriels, \\(\\mathbb{R}^n\\) entier.
+
+**Exemples non convexes :** Couronnes, étoiles, lettres "C" ou "U".
+
+**Pourquoi c'est important pour le TAF ?** Le TAF nécessite que le chemin \\(\\{a + t(b-a) : t \\in [0,1]\\}\\) reste dans le domaine de définition de \\(F\\). La convexité le garantit.
+
+**Lien avec l'optimisation :** Un optimum local d'une fonction convexe sur un ensemble convexe est un optimum global.`,
+          tags: ["convexe", "géométrie"]
+        },
+        {
+          id: "thm3_18",
+          type: "theoreme",
+          number: "3.18",
+          title: "Théorème d'inversion locale",
+          content: "Soit \\(F : U \\to \\mathbb{R}^n\\) de classe \\(C^1\\), \\(a \\in U\\). Si \\(F'(a)\\) est inversible, alors \\(\\exists\\) voisinages \\(V \\ni a\\) et \\(W \\ni F(a)\\) tels que \\(F : V \\to W\\) est bijective, \\(C^1\\), et :\\[(F^{-1})'(y) = \\bigl[F'(F^{-1}(y))\\bigr]^{-1}\\]",
+          explanation: `**Intuition :** Si la "meilleure approximation linéaire" de \\(F\\) (sa jacobienne \\(F'(a)\\)) est inversible, alors \\(F\\) est localement inversible.
+
+**Analogie 1D :** Si \\(f'(a) \\neq 0\\), alors \\(f\\) est localement monotone donc localement bijective.
+
+**Dérivée de l'inverse :** De \\(F(F^{-1}(y)) = y\\), en dérivant par règle de chaîne :
+\\[F'(F^{-1}(y)) \\cdot (F^{-1})'(y) = I \\implies (F^{-1})'(y) = \\bigl[F'(F^{-1}(y))\\bigr]^{-1}\\]
+
+**⚠ Local seulement :** \\(F'(a)\\) inversible en tout point ne garantit pas l'inversibilité globale.
+
+**Exemple :** \\(F(r,\\theta) = (r\\cos\\theta,\\ r\\sin\\theta)\\). \\(\\det F' = r \\neq 0\\) pour \\(r > 0\\), mais \\(F(r, \\theta) = F(r, \\theta + 2\\pi)\\) donc non injective globalement.`,
+          tags: ["inversion locale", "difféomorphisme", "jacobienne"]
+        },
+        {
+          id: "thm3_19",
+          type: "theoreme",
+          number: "3.19",
+          title: "Théorème des fonctions implicites",
+          content: "Soit \\(G : \\mathbb{R}^n \\times \\mathbb{R}^p \\to \\mathbb{R}^p\\) de classe \\(C^1\\). Si \\(G(a,b) = 0\\) et \\(\\partial_y G(a,b)\\) est inversible, alors \\(\\exists f : A \\to B\\) de classe \\(C^1\\) telle que \\(f(a) = b\\) et :\\[G(x, y) = 0 \\iff y = f(x) \\quad (x \\in A)\\]De plus : \\(f'(x) = -\\bigl[\\partial_y G(x,f(x))\\bigr]^{-1} \\cdot \\partial_x G(x,f(x))\\)",
+          explanation: `**Problème résolu :** L'équation \\(G(x,y) = 0\\) définit-elle implicitement \\(y\\) comme fonction de \\(x\\) ?
+
+**Intuition :** Si on peut "résoudre localement" (\\(\\partial_y G\\) inversible = la partie en \\(y\\) est "bien posée"), alors oui.
+
+**Formule de la dérivée implicite :** On dérive \\(G(x, f(x)) = 0\\) par la règle de chaîne :
+\\[\\partial_x G + \\partial_y G \\cdot f'(x) = 0 \\implies f'(x) = -(\\partial_y G)^{-1} \\cdot \\partial_x G\\]
+
+**Exemple du cours :** \\(G(x,y) = x^2 + xy + y^2 - 3 = 0\\) au point \\((1,1)\\).
+\\[G(1,1) = 0 \\checkmark \\qquad \\partial_y G(1,1) = x + 2y\\big|_{(1,1)} = 3 \\neq 0 \\checkmark\\]
+Donc \\(\\exists f\\) telle que \\(y = f(x)\\) près de \\((1,1)\\), et :
+\\[f'(1) = -\\frac{\\partial_x G}{\\partial_y G}\\bigg|_{(1,1)} = -\\frac{2x+y}{x+2y}\\bigg|_{(1,1)} = -\\frac{3}{3} = -1\\]`,
+          tags: ["fonctions implicites", "équation implicite", "dérivée implicite"]
+        }
+      ]
+    }
+  ]
+};
+
+/* ══════════════════════════════════════════
+   DONNÉES EXERCICES
+══════════════════════════════════════════ */
+const EXERCISES_DATA = {
+  chap1: [
+    {
+      id: "ex1_s1_1", serie: "Série 1", number: "1",
+      title: "Calcul de distances — normes ‖·‖₁, ‖·‖₂, ‖·‖∞",
+      refs: ["def1","def2","def4"],
+      enonce: `Calculer la distance \\(d(x, y) = \\|x - y\\|\\) entre \\(x = (-2, 2, 3)\\) et \\(y = (1, 1, 2)\\) avec les normes \\(\\|\\cdot\\|_1\\), \\(\\|\\cdot\\|_2\\) et \\(\\|\\cdot\\|_\\infty\\).`,
+      steps: [
+        { title: "Calculer x − y", body: "\\(x - y = (-2-1,\\ 2-1,\\ 3-2) = (-3,\\ 1,\\ 1)\\)" },
+        { title: "Norme ‖·‖₁", body: "\\(d_1 = |-3| + |1| + |1| = 3+1+1 = \\boxed{5}\\)" },
+        { title: "Norme ‖·‖₂", body: "\\(d_2 = \\sqrt{(-3)^2+1^2+1^2} = \\sqrt{11} \\approx 3.317\\)" },
+        { title: "Norme ‖·‖∞", body: "\\(d_\\infty = \\max(3,1,1) = \\boxed{3}\\)" },
+        { title: "Python", body: "\\(\\texttt{np.linalg.norm(x-y, 1/2/np.inf)}\\) → 5.0 / 3.317 / 3.0" }
+      ]
+    },
+    {
+      id: "ex1_s1_2", serie: "Série 1", number: "2",
+      title: "Ces applications sont-elles des normes ?",
+      refs: ["def4"],
+      enonce: `Déterminer si chacune est une norme sur \\(\\mathbb{R}^2\\) :\\n(a) \\(\\|x\\| = |x_1 - 2x_2|\\) \\n(b) \\(\\|x\\| = 2|x_1| + \\min(|x_1|,|x_2|)\\) \\n(c) \\(\\|x\\| = |x_1| + 3\\max(|x_1|,|x_2|)\\)`,
+      steps: [
+        { title: "(a) — NON ✗", body: "Contre-exemple : \\(x = (2,1)\\) donne \\(|2-2|=0\\) mais \\(x\\neq 0\\). La séparation est violée." },
+        { title: "(b) — OUI ✓", body: "Séparation : \\(2|x_1|=0\\Rightarrow x_1=0\\), puis \\(\\min(0,|x_2|)=0\\Rightarrow x_2=0\\). Homogénéité : triviale. Inégalité triangulaire : \\(\\min(|a+b|,|c+d|)\\leq\\min(|a|,|c|)+\\min(|b|,|d|)\\)." },
+        { title: "(c) — OUI ✓", body: "Séparation : \\(|x_1|=0\\) et \\(3\\max=0\\Rightarrow x=0\\). Homogénéité : triviale. Inégalité triangulaire : \\(|x_i+y_i|\\leq|x_i|+|y_i|\\) et \\(\\max(a+b,c+d)\\leq\\max(a,c)+\\max(b,d)\\)." }
+      ]
+    },
+    {
+      id: "ex1_s1_3", serie: "Série 1", number: "3 ★",
+      title: "Norme 2min + 3max : vérification, disque unité, équivalence",
+      refs: ["def4","thm_normes_equiv"],
+      enonce: `Vérifier que \\(\\|x\\| = 2\\min(|x_1|,|x_2|) + 3\\max(|x_1|,|x_2|)\\) est une norme sur \\(\\mathbb{R}^2\\). Dessiner le disque unité. Trouver \\(C_1, C_2 > 0\\) tels que \\(C_1\\|x\\|_2 \\leq \\|x\\| \\leq C_2\\|x\\|_2\\).`,
+      steps: [
+        { title: "Séparation", body: "\\(2m+3M=0\\Rightarrow m=M=0\\Rightarrow x=0\\). ✓" },
+        { title: "Homogénéité", body: "\\(\\|\\lambda x\\| = 2|\\lambda|\\min+3|\\lambda|\\max = |\\lambda|\\cdot\\|x\\|\\). ✓" },
+        { title: "Inégalité triangulaire", body: "On montre : \\(\\min(|x_1+y_1|,|x_2+y_2|)\\leq\\min(|x_i|)+\\min(|y_i|)\\) (WLOG prendre le cas où min est atteint en indice 1) et \\(\\max(|x_i+y_i|)\\leq\\max(|x_i|)+\\max(|y_i|)\\). ✓" },
+        { title: "Disque unité — analyse", body: "Par symétrie, dans le quadrant \\(x_1,x_2\\geq0\\) : si \\(x_1\\leq x_2\\), la contrainte est \\(2x_1+3x_2\\leq1\\). Les sommets sont \\((\\pm\\frac{1}{3},0)\\), \\((0,\\pm\\frac{1}{3})\\), \\((\\pm\\frac{1}{5},\\pm\\frac{1}{5})\\) : c'est un **hexagone** convexe." },
+        { title: "Borne supérieure C₂ = 5", body: "\\(\\min\\leq\\|x\\|_2\\) et \\(\\max\\leq\\|x\\|_2\\), donc \\(\\|x\\|\\leq 2\\|x\\|_2+3\\|x\\|_2 = 5\\|x\\|_2\\)." },
+        { title: "Borne inférieure C₁ = 2", body: "\\(\\|x\\|=2m+3M\\geq 2m+2M=2(|x_1|+|x_2|)=2\\|x\\|_1\\geq 2\\|x\\|_2\\). Conclusion : \\(2\\|x\\|_2\\leq\\|x\\|\\leq 5\\|x\\|_2\\). ✓" }
+      ]
+    },
+    {
+      id: "ex1_s2_1", serie: "Série 2", number: "1",
+      title: "Ouvert, fermé, borné, compact — 5 ensembles",
+      refs: ["def8","def10","def12","def_compact","thm7","thm8"],
+      enonce: `Étudier les propriétés topologiques de :\\n\\(A=\\{-1\\leq x_2\\leq 2\\}\\), \\(B=\\{x_1x_2>1\\}\\), \\(C=\\{0<\\|x\\|_2<2\\}\\), \\(D=\\{0\\leq\\|x\\|_2<3\\}\\), \\(E=\\{x_1^2+x_1+x_2>1\\}\\).`,
+      steps: [
+        { title: "A — bande horizontale", body: "**Fermé ✓** (limite d'une suite dans A reste dans A par passage à la limite). **Non ouvert** (point (0,−1) sur le bord). **Non borné** (x₁ libre). **Non compact**." },
+        { title: "B — hyperbole x₁x₂ > 1", body: "**Ouvert ✓** : préimage de (1,+∞) par f(x₁,x₂)=x₁x₂ continue. **Non fermé** : suite \\((2,\\frac{1}{2}+\\frac{1}{k})\\in B\\) converge vers \\((2,\\frac{1}{2})\\notin B\\). **Non borné**." },
+        { title: "C — disque troué 0 < ‖x‖ < 2", body: "**Ouvert ✓** : intersection de deux ouverts B(0,2) et {0}ᶜ. **Non fermé** : \\((\\frac{1}{k},0)\\to(0,0)\\notin C\\). **Borné ✓** : \\(\\|x\\|_2<2\\). **Non compact** (non fermé)." },
+        { title: "D — disque 0 ≤ ‖x‖ < 3", body: "**Ouvert ✓** : c'est la boule ouverte B(0,3). **Non fermé** : \\((3-\\frac{1}{k},0)\\to(3,0)\\notin D\\). **Borné ✓**. **Non compact**." },
+        { title: "E — au-dessus de la parabole", body: "**Ouvert ✓** : préimage de (1,+∞) par g=x₁²+x₁+x₂ continue. **Non fermé** : \\((0,1+\\frac{1}{k})\\to(0,1)\\notin E\\). **Non borné**." }
+      ]
+    },
+    {
+      id: "ex1_s2_2", serie: "Série 2", number: "2",
+      title: "Suite bornée et sous-suite convergente",
+      refs: ["def_compact","thm4","thm5"],
+      enonce: `Soit \\(x_n = \\bigl((-1)^n + \\frac{1}{\\sqrt{n}},\\ (-1)^{\\lfloor n/3\\rfloor}\\bigr)\\). Montrer qu'elle est bornée et trouver une sous-suite convergente.`,
+      steps: [
+        { title: "Borne de la composante 1", body: "\\(|(-1)^n+\\frac{1}{\\sqrt{n}}|\\leq 1+\\frac{1}{\\sqrt{n}}\\leq 2\\) pour \\(n\\geq1\\). ✓" },
+        { title: "Borne de la composante 2", body: "\\((-1)^{\\lfloor n/3\\rfloor}\\in\\{-1,+1\\}\\), donc bornée par 1. ✓ — La suite est bornée." },
+        { title: "Construction de la sous-suite", body: "Prenons \\(n_k=6k\\) : composante 1 → \\(1+\\frac{1}{\\sqrt{6k}}\\to 1\\) ; composante 2 → \\((-1)^{2k}=+1\\). Donc \\(x_{6k}\\to(1,1)\\). ✓" }
+      ]
+    },
+    {
+      id: "ex1_s2_3", serie: "Série 2", number: "3 ★",
+      title: "Continuité de f(x,y) = 2x²y/(x⁴+y²) en (0,0)",
+      refs: ["thm_cont_suite"],
+      enonce: `Soit \\(f(x,y)=\\frac{2x^2y}{x^4+y^2}\\) pour \\((x,y)\\neq(0,0)\\) et \\(f(0,0)=0\\).\\n(a) Montrer \\(\\lim f(0,\\frac{1}{n})=f(0,0)\\).\\n(b) \\(f\\) est-elle continue en (0,0) ?`,
+      steps: [
+        { title: "(a) Le long de (0, 1/n)", body: "\\(f(0,\\frac{1}{n})=\\frac{0}{0^4+(1/n)^2}=0=f(0,0)\\). Donc la limite est bien \\(f(0,0)\\). ✓" },
+        { title: "(b) Chemin révélateur : y = x²", body: "Prenons \\((x_n,y_n)=(\\frac{1}{n},\\frac{1}{n^2})\\to(0,0)\\)." },
+        { title: "Calcul sur ce chemin", body: "\\(f(\\frac{1}{n},\\frac{1}{n^2})=\\frac{2\\cdot\\frac{1}{n^2}\\cdot\\frac{1}{n^2}}{\\frac{1}{n^4}+\\frac{1}{n^4}}=\\frac{\\frac{2}{n^4}}{\\frac{2}{n^4}}=1\\neq 0\\)." },
+        { title: "Conclusion — f non continue", body: "Deux suites → (0,0) donnent des limites différentes (0 et 1) ⟹ la limite en (0,0) n'existe pas ⟹ **f n'est pas continue en (0,0)**. ✗" }
+      ]
+    },
+    {
+      id: "ex1_s3_1", serie: "Série 3", number: "1",
+      title: "Continuité de f₁, f₂, f₃",
+      refs: ["thm_cont_comp","thm_cont_suite"],
+      enonce: `Étudier la continuité de :\\n\\(f_1=\\frac{2x_1^3}{2+3x_2^2}\\), \\(f_2\\) (définie par morceaux sur/hors disque unité), \\(f_3=\\frac{x_1^2-4x_2^2}{x_1-2x_2}\\) (prolongée par \\(3x_2\\)).`,
+      steps: [
+        { title: "f₁ — continue partout", body: "Quotient de polynômes continus. Dénominateur \\(2+3x_2^2\\geq2>0\\) partout. ✓" },
+        { title: "f₂ — continue partout", body: "Sur la frontière \\(x_1^2+x_2^2=1\\) : lim extérieure = \\(2x_1^2+x_2^2-1=x_1^2+(x_1^2+x_2^2)-1=x_1^2\\) = valeur intérieure. Pas de saut. ✓" },
+        { title: "f₃ — factorisation", body: "\\(x_1^2-4x_2^2=(x_1-2x_2)(x_1+2x_2)\\), donc pour \\(x_1\\neq 2x_2\\) : \\(f_3=x_1+2x_2\\)." },
+        { title: "f₃ — continuité sur la droite x₁=2x₂", body: "Limite = \\(x_1+2x_2=4x_2\\). Valeur définie = \\(3x_2\\). Égales ssi \\(x_2=0\\). **Continue en (0,0) seulement** sur la droite ; discontinue ailleurs sur \\(x_1=2x_2\\). ✗" }
+      ]
+    }
+  ],
+  chap2: [
+    {
+      id: "ex2_s3_2", serie: "Série 3", number: "2",
+      title: "Convergence simple et uniforme de suites de fonctions",
+      refs: ["thm_normes_equiv"],
+      enonce: `Pour chaque suite, trouver la limite simple \\(f\\), puis déterminer si la convergence est uniforme sur \\(\\mathbb{R}^2\\) (ou \\([0,1]^2\\)).\\n(a) \\(f_n=|x_1-\\frac{1}{3}|^n\\cos(x_2)\\) ; (b) \\(f_n=\\frac{1}{n}\\sin(nx_1)\\sin(nx_2)\\) ; (c) \\(f_n=(x_1x_2)^n\\) sur \\([0,1]^2\\).`,
+      steps: [
+        { title: "(a) Limite : f = 0", body: "Pour \\(x_1\\in[0,1]\\) : \\(|x_1-\\frac{1}{3}|\\leq\\frac{2}{3}<1\\Rightarrow|x_1-\\frac{1}{3}|^n\\to0\\). Hors [0,1] : \\(f_n=0\\)." },
+        { title: "(a) Convergence uniforme ✓", body: "\\(\\sup|f_n|=(\\frac{2}{3})^n\\cdot\\sup|\\cos x_2|=(\\frac{2}{3})^n\\to0\\). Uniforme. ✓" },
+        { title: "(b) Limite : f = 0, uniforme ✓", body: "\\(|f_n|\\leq\\frac{1}{n}\\to0\\) uniformément car la borne ne dépend pas de \\((x_1,x_2)\\). ✓" },
+        { title: "(c) Limite f discontinue en (1,1)", body: "\\(f(x_1,x_2)=0\\) si \\(x_1x_2<1\\), \\(=1\\) si \\(x_1=x_2=1\\)." },
+        { title: "(c) Convergence non uniforme ✗", body: "La limite est discontinue. Or la limite uniforme de fonctions continues est continue. Contradiction. Aussi : \\((1-\\frac{1}{n})^n\\to e^{-1}\\neq0\\). ✗" }
+      ]
+    },
+    {
+      id: "ex2_s3_3", serie: "Série 3", number: "3 ★",
+      title: "Matrice d'une application linéaire dans des nouvelles bases",
+      refs: ["def2_3"],
+      enonce: `Soit \\(f:\\mathbb{R}^3\\to\\mathbb{R}^2\\) donnée par \\(A=\\begin{pmatrix}1&0&3\\\\2&1&1\\end{pmatrix}\\). Calculer la matrice de \\(f\\) dans les bases \\(\\mathcal{S}=(S_1,S_2,S_3)\\) et \\(\\mathcal{T}=(T_1,T_2)\\) données.`,
+      steps: [
+        { title: "Méthode générale", body: "\\([f]_{\\mathcal{T}\\leftarrow\\mathcal{S}} = P_{\\mathcal{T}}^{-1}\\cdot A\\cdot P_{\\mathcal{S}}\\)" },
+        { title: "Calculer A·Sⱼ pour j=1,2,3", body: "\\(AS_1=(-2,1)^T\\), \\(AS_2=(0,-1)^T\\), \\(AS_3=(7,4)^T\\)" },
+        { title: "Calculer P_T⁻¹", body: "\\(P_\\mathcal{T}=\\begin{pmatrix}1&3\\\\2&1\\end{pmatrix}\\), \\(\\det=-5\\), \\(P_\\mathcal{T}^{-1}=\\frac{1}{-5}\\begin{pmatrix}1&-3\\\\-2&1\\end{pmatrix}\\)" },
+        { title: "Exprimer chaque image dans T", body: "\\(P_\\mathcal{T}^{-1}(-2,1)^T=(1,-1)^T\\) ; \\(P_\\mathcal{T}^{-1}(0,-1)^T=(-\\frac{3}{5},\\frac{1}{5})^T\\) ; \\(P_\\mathcal{T}^{-1}(7,4)^T=(1,2)^T\\)" },
+        { title: "Résultat", body: "\\([f]_{\\mathcal{T}\\leftarrow\\mathcal{S}}=\\begin{pmatrix}1&-\\frac{3}{5}&1\\\\-1&\\frac{1}{5}&2\\end{pmatrix}\\)" }
+      ]
+    },
+    {
+      id: "ex2_s4_1", serie: "Série 4", number: "1",
+      title: "Matrices orthogonale et unitaire",
+      refs: ["def2_3"],
+      enonce: `Déterminer si \\(A=\\begin{pmatrix}1&-2\\\\-2&1\\end{pmatrix}\\) est orthogonale et si \\(B=\\frac{1}{10}\\begin{pmatrix}3&1\\\\i&-3i\\end{pmatrix}\\) est unitaire.`,
+      steps: [
+        { title: "A orthogonale ? — NON", body: "\\(A^TA=\\begin{pmatrix}5&-4\\\\-4&5\\end{pmatrix}\\neq I\\). Les colonnes n'ont pas norme 1 : \\(\\|(1,-2)\\|_2=\\sqrt{5}\\neq1\\)." },
+        { title: "B unitaire ? — OUI", body: "\\(B^*B=\\frac{1}{100}\\begin{pmatrix}3&-i\\\\1&3i\\end{pmatrix}\\begin{pmatrix}3&1\\\\i&-3i\\end{pmatrix}=\\frac{1}{100}\\begin{pmatrix}10&0\\\\0&10\\end{pmatrix}=I\\). ✓" }
+      ]
+    },
+    {
+      id: "ex2_s4_2", serie: "Série 4", number: "2",
+      title: "Normes matricielles ‖A‖₁, ‖A‖∞, ‖A‖₂",
+      refs: ["def2_3"],
+      enonce: `Calculer les normes de \\(A=\\begin{pmatrix}1&2\\\\3&-2\\\\-5&3\\end{pmatrix}\\).`,
+      steps: [
+        { title: "‖A‖₁ = max sommes colonnes", body: "Col 1 : \\(|1|+|3|+|-5|=9\\). Col 2 : \\(|2|+|-2|+|3|=7\\). \\(\\|A\\|_1=9\\)." },
+        { title: "‖A‖∞ = max sommes lignes", body: "Lignes : 3, 5, 8. \\(\\|A\\|_\\infty=8\\)." },
+        { title: "‖A‖₂ = σ_max(A)", body: "\\(A^TA=\\begin{pmatrix}35&-19\\\\-19&17\\end{pmatrix}\\). VP : \\(\\lambda^2-52\\lambda+234=0\\Rightarrow\\lambda=26\\pm\\sqrt{442}\\). \\(\\|A\\|_2=\\sqrt{26+\\sqrt{442}}\\approx6.86\\)." }
+      ]
+    },
+    {
+      id: "ex2_s4_3", serie: "Série 4", number: "3",
+      title: "Matrice définie positive — critère de Sylvester",
+      refs: ["def2_3"],
+      enonce: `Montrer que \\(A=\\begin{pmatrix}3&-2&0\\\\-2&2&1\\\\0&1&2\\end{pmatrix}\\) est définie positive.`,
+      steps: [
+        { title: "Mineur d'ordre 1", body: "\\(\\Delta_1=3>0\\). ✓" },
+        { title: "Mineur d'ordre 2", body: "\\(\\Delta_2=3\\cdot2-(-2)^2=6-4=2>0\\). ✓" },
+        { title: "Mineur d'ordre 3 = det(A)", body: "Développement colonne 3 : \\(\\det(A)=-1\\cdot3+2\\cdot2=1>0\\). ✓" },
+        { title: "Conclusion", body: "Tous les mineurs principaux sont strictement positifs ⟹ **A est définie positive** (critère de Sylvester). ✓" }
+      ]
+    },
+    {
+      id: "ex2_s4_4", serie: "Série 4", number: "4 ★",
+      title: "Décomposition de Schur réelle — démonstration",
+      refs: ["def2_3"],
+      enonce: `Démontrer la décomposition de Schur réelle : (a) cas valeur propre réelle, (b) cas valeur propre complexe \\(\\alpha+i\\beta\\), (c) conclusion.`,
+      steps: [
+        { title: "(a) Cas λ réel", body: "Soit \\(v_1\\) v.p. unitaire. Compléter en base orthonormée \\((v_1,v_2,\\ldots,v_n)\\) → matrice orthogonale \\(U_1\\). Alors \\(U_1^TAU_1\\) a \\(\\lambda_1\\) en (1,1) et des zéros sous la diagonale en col 1 (car \\(v_j^T(\\lambda_1v_1)=0\\))." },
+        { title: "(b.i) Trouver µ pour u⊥w", body: "\\((1+i\\mu)(u+iw)\\) est v.p. (multiple non nul). Partie réelle \\(u-\\mu w\\), imaginaire \\(w+\\mu u\\). Orthogonalité \\(\\Leftrightarrow\\langle u,w\\rangle(1-\\mu^2)+\\mu(\\|u\\|^2-\\|w\\|^2)=0\\) : équation du 2nd degré en \\(\\mu\\), toujours résoluble. ✓" },
+        { title: "(b.ii) Vecteur propre normalisé", body: "\\(u_1+i\\nu w_1=\\frac{u+iw}{\\|u\\|}=\\frac{v_1}{\\|u\\|}\\) est v.p. pour \\(\\lambda_1\\). ✓" },
+        { title: "(b.iii) Bloc 2×2 réel", body: "Séparation Re/Im de \\(A(u_1+i\\nu w_1)=(\\alpha+i\\beta)(u_1+i\\nu w_1)\\) donne \\(A(u_1\\ w_1)=(u_1\\ w_1)\\begin{pmatrix}\\alpha&\\beta/\\nu\\\\-\\nu\\beta&\\alpha\\end{pmatrix}\\)." },
+        { title: "(c) Conclusion", body: "Par récurrence : \\(\\exists Q\\) orthogonale réelle telle que \\(Q^TAQ\\) est quasi-triangulaire (blocs 1×1 pour v.p. réelles, blocs 2×2 pour paires complexes conjuguées)." }
+      ]
+    },
+    {
+      id: "ex2_s5_1", serie: "Série 5", number: "1",
+      title: "Décomposition de Schur de A = [[-3,2],[4,-1]]",
+      refs: ["def2_3"],
+      enonce: `Trouver une matrice orthogonale \\(U\\) telle que \\(U^TAU\\) soit triangulaire pour \\(A=\\begin{pmatrix}-3&2\\\\4&-1\\end{pmatrix}\\).`,
+      steps: [
+        { title: "Valeurs propres", body: "\\(\\lambda^2+4\\lambda-5=0\\Rightarrow\\lambda_1=1,\\lambda_2=-5\\)." },
+        { title: "Vecteur propre pour λ₁=1", body: "\\((A-I)v=0\\Rightarrow v_2=2v_1\\Rightarrow u_1=\\frac{1}{\\sqrt5}(1,2)^T\\)." },
+        { title: "Compléter la base orthonormée", body: "\\(u_2=\\frac{1}{\\sqrt5}(-2,1)^T\\). Matrice \\(U=\\frac{1}{\\sqrt5}\\begin{pmatrix}1&-2\\\\2&1\\end{pmatrix}\\)." },
+        { title: "Résultat", body: "\\(U^TAU=\\begin{pmatrix}1&-2\\\\0&-5\\end{pmatrix}\\) — triangulaire avec v.p. sur la diagonale. ✓" }
+      ]
+    },
+    {
+      id: "ex2_s5_2a", serie: "Série 5", number: "2a",
+      title: "Formes quadratiques — écriture matricielle",
+      refs: ["def2_3"],
+      enonce: `Écrire sous forme \\(x^TAx+b^Tx+c=0\\) : hyperbole, parabole, ellipsoïde, paraboloïde hyperbolique.`,
+      steps: [
+        { title: "Hyperbole x₁²/a² − x₂²/b² = 1", body: "\\(A=\\mathrm{diag}(1/a^2,-1/b^2)\\), \\(b=0\\), \\(c=-1\\)." },
+        { title: "Parabole x₁² − 2px₂ = 0", body: "\\(A=\\mathrm{diag}(1,0)\\), \\(b=(0,-2p)^T\\), \\(c=0\\)." },
+        { title: "Ellipsoïde", body: "\\(A=\\mathrm{diag}(1/a^2,1/b^2,1/c^2)\\), \\(b=0\\), \\(c=-1\\)." },
+        { title: "Paraboloïde hyperbolique", body: "\\(A=\\mathrm{diag}(1/a^2,-1/b^2,0)\\), \\(b=(0,0,-2p)^T\\), \\(c=0\\)." }
+      ]
+    },
+    {
+      id: "ex2_s5_2b", serie: "Série 5", number: "2b ★",
+      title: "Forme quadratique f(x) = 4x₁² − 2x₁x₂ + 4x₂² + 2x₁",
+      refs: ["def2_3"],
+      enonce: `(i) Écriture matricielle. (ii) Rotation diagonalisant \\(A\\). (iii) Translation et identification de la conique.`,
+      steps: [
+        { title: "(i) Matrice", body: "\\(A=\\begin{pmatrix}4&-1\\\\-1&4\\end{pmatrix}\\), \\(b=(2,0)^T\\), \\(c=0\\)." },
+        { title: "(ii) V.P. de A : 3 et 5", body: "\\((4-\\lambda)^2-1=0\\Rightarrow\\lambda=3,5\\). V.p. : \\(v^{(1)}=\\frac{1}{\\sqrt2}(1,1)^T\\), \\(v^{(2)}=\\frac{1}{\\sqrt2}(1,-1)^T\\)." },
+        { title: "(ii) Rotation θ=45°", body: "\\(R_\\theta=\\frac{1}{\\sqrt2}\\begin{pmatrix}1&1\\\\1&-1\\end{pmatrix}\\), \\(R_\\theta^TAR_\\theta=\\begin{pmatrix}3&0\\\\0&5\\end{pmatrix}\\). Forme : \\(3y_1^2+5y_2^2+\\sqrt2\\cdot2y_1+\\sqrt2\\cdot2y_2\\)." },
+        { title: "(iii) Complétion du carré", body: "\\(3(y_1+\\frac{\\sqrt2}{3})^2+5(y_2+\\frac{\\sqrt2}{5})^2=\\frac{2}{3}+\\frac{2}{5}=\\frac{16}{15}\\)." },
+        { title: "(iii) Identification", body: "\\(\\frac{z_1^2}{16/45}+\\frac{z_2^2}{16/75}=1\\) avec \\(z=y-t\\). **C'est une ellipse** (deux v.p. de même signe). \\(a=\\frac{4}{3\\sqrt5}\\), \\(b=\\frac{4}{5\\sqrt3}\\)." }
+      ]
+    },
+    {
+      id: "ex2_s5_3", serie: "Série 5", number: "3",
+      title: "Laplacien en coordonnées polaires",
+      refs: ["def3_1"],
+      enonce: `Soit \\(w(r,\\theta)=u(r\\cos\\theta,r\\sin\\theta)\\). Démontrer \\(\\Delta u=\\frac{1}{r}\\frac{\\partial}{\\partial r}(r\\frac{\\partial w}{\\partial r})+\\frac{1}{r^2}\\frac{\\partial^2 w}{\\partial\\theta^2}\\).`,
+      steps: [
+        { title: "Dérivées premières (règle de la chaîne)", body: "\\(\\frac{\\partial w}{\\partial r}=u_x\\cos\\theta+u_y\\sin\\theta\\), \\(\\frac{\\partial w}{\\partial\\theta}=-ru_x\\sin\\theta+ru_y\\cos\\theta\\)." },
+        { title: "Dérivées secondes ∂²w/∂r²", body: "\\(\\frac{\\partial^2w}{\\partial r^2}=u_{xx}\\cos^2\\theta+2u_{xy}\\cos\\theta\\sin\\theta+u_{yy}\\sin^2\\theta\\)." },
+        { title: "Développer ∂²w/∂θ²", body: "\\(\\frac{\\partial^2w}{\\partial\\theta^2}=-r\\cos\\theta\\,u_x-r\\sin\\theta\\,u_y+r^2\\sin^2\\theta\\,u_{xx}-2r^2\\sin\\theta\\cos\\theta\\,u_{xy}+r^2\\cos^2\\theta\\,u_{yy}\\)." },
+        { title: "Assembler le membre droit", body: "\\(\\frac{1}{r}\\frac{\\partial w}{\\partial r}+\\frac{\\partial^2w}{\\partial r^2}+\\frac{1}{r^2}\\frac{\\partial^2w}{\\partial\\theta^2}\\) : les termes en \\(u_x, u_y\\) s'annulent. Termes en \\(u_{xx}\\) : \\(\\cos^2\\theta+\\sin^2\\theta=1\\). Idem pour \\(u_{yy}\\). Termes croisés : s'annulent. ✓" }
+      ]
+    }
+  ],
+  chap3: [
+    {
+      id: "ex3_s6_1", serie: "Série 6", number: "1",
+      title: "Fonctions harmoniques : ln‖x‖ dans ℝ², 1/‖x‖ dans ℝ³",
+      refs: ["def3_1","thm3_19"],
+      enonce: `Montrer que \\(u=\\ln\\|x\\|_2\\) satisfait \\(\\Delta u=0\\) dans \\(\\mathbb{R}^2\\setminus\\{0\\}\\), et que \\(u=1/\\|x\\|_2\\) satisfait \\(\\Delta u=0\\) dans \\(\\mathbb{R}^3\\setminus\\{0\\}\\). Quelles sont les solutions de \\(\\Delta u=0\\) sur \\(\\mathbb{R}\\) ?`,
+      steps: [
+        { title: "(a) ∂²u/∂x₁² pour ln‖x‖", body: "\\(u=\\frac{1}{2}\\ln(x_1^2+x_2^2)\\). \\(\\partial_1 u=\\frac{x_1}{r^2}\\). \\(\\partial_{11}u=\\frac{r^2-2x_1^2}{r^4}=\\frac{x_2^2-x_1^2}{r^4}\\). Par symétrie \\(\\partial_{22}u=\\frac{x_1^2-x_2^2}{r^4}\\). Somme = 0. ✓" },
+        { title: "(b) ∂²u/∂x₁² pour 1/‖x‖", body: "\\(\\partial_1 u=-x_1/r^3\\). \\(\\partial_{11}u=(3x_1^2-r^2)/r^5\\). Somme sur les 3 coords : \\(3r^2-3r^2=0\\). ✓" },
+        { title: "Solutions sur ℝ", body: "\\(u''=0\\Rightarrow u'=a\\Rightarrow u(x)=ax+b\\). Les solutions sont les fonctions **affines**." }
+      ]
+    },
+    {
+      id: "ex3_s6_2", serie: "Série 6", number: "2",
+      title: "Stabilité de la différentiabilité : somme et produit",
+      refs: ["def3_1"],
+      enonce: `Si \\(f,g\\) sont différentiables en \\(x_0\\), montrer que \\(f+g\\) et \\(fg\\) (pour \\(f,g:\\mathbb{R}^m\\to\\mathbb{R}\\)) le sont aussi.`,
+      steps: [
+        { title: "f+g différentiable", body: "Développer \\((f+g)(x_0+h)\\). La différentielle est \\(d(f+g)(x_0)=df(x_0)+dg(x_0)\\). Somme de deux \\(o(\\|h\\|)\\) est encore \\(o(\\|h\\|)\\). ✓" },
+        { title: "fg : terme linéaire", body: "\\((fg)(x_0+h)=f_0g_0+(f_0\\,dg(x_0)+g_0\\,df(x_0))h+R(h)\\). La partie linéaire \\(L(h)=f_0\\,dg(x_0)h+g_0\\,df(x_0)h\\) est bien la règle du produit." },
+        { title: "fg : reste R(h) = o(‖h‖)", body: "\\(|R|\\leq|f_0\\varepsilon_g|\\|h\\|+|g_0\\varepsilon_f|\\|h\\|+|\\varepsilon_f\\varepsilon_g|\\|h\\|^2+\\|df\\|\\|dg\\|\\|h\\|^2=o(\\|h\\|)\\). ✓" }
+      ]
+    },
+    {
+      id: "ex3_s6_3", serie: "Série 6", number: "3 ★",
+      title: "Gradient, Laplacien et Taylor de f = cos(x₁)e^{-x₁+2x₂}",
+      refs: ["def3_1","thm3_19"],
+      enonce: `(a) Calculer \\(\\nabla f\\) et vérifier \\(\\text{div}(\\nabla f)=\\Delta f\\). (b) Taylor ordre 2 en \\((0,0)\\) et en \\((\\pi/2,\\frac{1}{2})\\).`,
+      steps: [
+        { title: "(a) Gradient", body: "\\(\\partial_1 f = e^{-x_1+2x_2}(-\\sin x_1-\\cos x_1)\\). \\(\\partial_2 f = 2\\cos(x_1)e^{-x_1+2x_2}\\)." },
+        { title: "(a) Laplacien", body: "\\(\\partial_{11}f=e^{-x_1+2x_2}\\cdot2\\sin x_1\\). \\(\\partial_{22}f=4\\cos(x_1)e^{-x_1+2x_2}\\). \\(\\Delta f=e^{-x_1+2x_2}(2\\sin x_1+4\\cos x_1)\\). \\(\\text{div}(\\nabla f)=\\Delta f\\) par définition. ✓" },
+        { title: "(b) Taylor en (0,0) — valeurs", body: "\\(f=1\\), \\(\\partial_1=-1\\), \\(\\partial_2=2\\), \\(\\partial_{11}=0\\), \\(\\partial_{12}=-2\\), \\(\\partial_{22}=4\\)." },
+        { title: "(b) Taylor en (0,0) — résultat", body: "\\(f(x)\\approx 1-x_1+2x_2-2x_1x_2+2x_2^2\\)." },
+        { title: "(b) Taylor en (π/2, 1/2) — valeurs", body: "\\(e_0=e^{1-\\pi/2}\\). \\(f=0\\), \\(\\partial_1=-e_0\\), \\(\\partial_2=0\\), \\(\\partial_{11}=2e_0\\), \\(\\partial_{12}=-2e_0\\), \\(\\partial_{22}=0\\)." },
+        { title: "(b) Taylor en (π/2, 1/2) — résultat", body: "\\(f(x)\\approx e_0(-h_1+h_1^2-2h_1h_2)\\) avec \\(h_i=x_i-x_{0i}\\) et \\(e_0=e^{1-\\pi/2}\\approx0.208\\)." }
+      ]
+    },
+    {
+      id: "ex3_s7_1", serie: "Série 7", number: "1",
+      title: "Jacobienne de f(x) = (e^{ax₂}cos x₁, e^{bx₂}sin x₁) et inversibilité",
+      refs: ["def3_1"],
+      enonce: `Calculer \\(J_f\\) et montrer qu'elle est inversible en tout point \\(x\\in\\mathbb{R}^2\\) (avec \\(a,b>0\\)).`,
+      steps: [
+        { title: "Calcul de J_f", body: "\\(J_f=\\begin{pmatrix}-e^{ax_2}\\sin x_1 & ae^{ax_2}\\cos x_1\\\\e^{bx_2}\\cos x_1 & be^{bx_2}\\sin x_1\\end{pmatrix}\\)" },
+        { title: "Déterminant", body: "\\(\\det J_f=-e^{(a+b)x_2}(b\\sin^2 x_1+a\\cos^2 x_1)\\)." },
+        { title: "Non-annulation", body: "\\(e^{(a+b)x_2}>0\\) toujours. \\(b\\sin^2+a\\cos^2>0\\) car \\(a,b>0\\) et \\(\\sin^2+\\cos^2=1\\). Donc \\(\\det J_f\\neq0\\) partout. ✓" }
+      ]
+    },
+    {
+      id: "ex3_s7_2", serie: "Série 7", number: "2",
+      title: "Inversion locale — 5 points",
+      refs: ["thm3_19"],
+      enonce: `Pour \\(z=x_1^3+2x_2^2\\), \\(w=\\sin2x_1+\\cos x_2\\), déterminer si on peut écrire \\(x_1=f(z,w)\\), \\(x_2=g(z,w)\\) près de chaque point donné.`,
+      steps: [
+        { title: "Jacobienne ∂(z,w)/∂(x₁,x₂)", body: "\\(J=\\begin{pmatrix}-3x_1^2&-4x_2\\\\-2\\cos2x_1&\\sin x_2\\end{pmatrix}\\), \\(\\det=-3x_1^2\\sin x_2-8x_2\\cos2x_1\\)." },
+        { title: "(0,0) — det = 0", body: "\\(\\det=0\\). ❌ Pas d'inversion locale garantie." },
+        { title: "(π, π/2) — det = -3π²-4π ≠ 0", body: "✅ Inversion locale possible." },
+        { title: "(π/2, π) — det = 8π ≠ 0", body: "✅ Inversion locale possible." },
+        { title: "(π/2, π/2) — det ≈ 5.17 ≠ 0", body: "\\(-\\frac{3\\pi^2}{4}+4\\pi\\approx5.17\\). ✅ Inversion locale possible." },
+        { title: "(π/4, π) — det = 0", body: "\\(\\cos(\\pi/2)=0\\) et \\(\\sin(\\pi)=0\\). ❌ Pas d'inversion locale garantie." }
+      ]
+    },
+    {
+      id: "ex3_s7_3", serie: "Série 7", number: "3 ★",
+      title: "Fonctions implicites sur S = {x₁²x₃ − 2sin(x₁x₃) + 2cos(x₁x₂) = 2}",
+      refs: ["thm3_19"],
+      enonce: `Déterminer si, près de \\((1,0,0)\\), on peut écrire \\(x_3=f(x_1,x_2)\\), \\(x_2=g(x_1,x_3)\\) ou \\(x_1=h(x_2,x_3)\\).`,
+      steps: [
+        { title: "Vérification (1,0,0) ∈ S", body: "\\(F(1,0,0)=0-0+2-2=0\\). ✓" },
+        { title: "∂F/∂x₃ en (1,0,0)", body: "\\(\\partial_3F=x_1^2-2x_1\\cos(x_1x_3)\\). En (1,0,0) : \\(1-2=-1\\neq0\\). ✅" },
+        { title: "∂F/∂x₂ en (1,0,0)", body: "\\(\\partial_2F=-2x_1\\sin(x_1x_2)\\). En (1,0,0) : \\(-2\\sin(0)=0\\). ❌" },
+        { title: "∂F/∂x₁ en (1,0,0)", body: "\\(\\partial_1F=2x_1x_3-2x_3\\cos(x_1x_3)-2x_2\\sin(x_1x_2)\\). En (1,0,0) : \\(0\\). ❌" },
+        { title: "Conclusion", body: "**x₃=f(x₁,x₂) ✅** : possible localement (∂F/∂x₃=-1≠0). \\n**x₂=g(x₁,x₃) ❌** et **x₁=h(x₂,x₃) ❌** : non garantis (dérivées partielles nulles)." }
+      ]
+    }
+  ]
+};
+
+
+</script>
+<script>
+let katexReady = false;
+
+function renderMath() {
+  if (!katexReady || typeof renderMathInElement === 'undefined') return;
+  const el = document.getElementById('mainContent');
+  if (!el) return;
+  renderMathInElement(el, {
+    delimiters: [
+      {left: '\\[', right: '\\]', display: true},
+      {left: '\\(', right: '\\)', display: false},
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ],
+    throwOnError: false,
+    strict: false
+  });
+}
+
+/* ── STATE ── */
+let view = 'home';
+let filter = 'all';
+let query = '';
+
+/* ══════════════════════════════════════════
+   THEME
+══════════════════════════════════════════ */
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeBtn(savedTheme);
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  updateThemeBtn(next);
+}
+function updateThemeBtn(t) {
+  const btn = document.getElementById('themeBtn');
+  if (btn) btn.textContent = t === 'light' ? '🌙' : '☀️';
+}
+
+/* ══════════════════════════════════════════
+   SUIVI
+══════════════════════════════════════════ */
+function loadProg() {
+  try { return JSON.parse(localStorage.getItem('mathProgress') || '{}'); }
+  catch { return {}; }
+}
+function saveProg(p) { localStorage.setItem('mathProgress', JSON.stringify(p)); }
+
+function getStatus(id) {
+  return loadProg()[id] || { enonce: false, demo: false };
+}
+
+function toggleStatus(id, field, e) {
+  e.stopPropagation();
+  const p = loadProg();
+  if (!p[id]) p[id] = { enonce: false, demo: false };
+  p[id][field] = !p[id][field];
+  saveProg(p);
+  /* mettre à jour le bouton dans la carte */
+  refreshBtn(id, field);
+  /* recalculer les barres */
+  updateAllBars();
+  buildNav();
+}
+
+function refreshBtn(id, field) {
+  const btn = document.getElementById('cbtn-' + id + '-' + field);
+  if (!btn) return;
+  const done = getStatus(id)[field];
+  if (field === 'enonce') {
+    btn.className = 'check-btn' + (done ? ' checked-e' : '');
+    btn.innerHTML = `<span class="chk-box"></span>Énoncé su`;
+  } else {
+    btn.className = 'check-btn' + (done ? ' checked-d' : '');
+    btn.innerHTML = `<span class="chk-box"></span>Démo su`;
+  }
+}
+
+function computeGlobal() {
+  const p = loadProg();
+  const all = MATH_DATA.chapters.flatMap(c => c.items);
+  let e = 0, d = 0;
+  all.forEach(item => { const s = p[item.id]||{}; if(s.enonce) e++; if(s.demo) d++; });
+  const pct = all.length ? Math.round((e + d) / (all.length * 2) * 100) : 0;
+  return { total: all.length, enonce: e, demo: d, pct };
+}
+
+function computeChap(chap) {
+  const p = loadProg();
+  let e = 0, d = 0;
+  chap.items.forEach(item => { const s = p[item.id]||{}; if(s.enonce) e++; if(s.demo) d++; });
+  const pct = chap.items.length ? Math.round((e + d) / (chap.items.length * 2) * 100) : 0;
+  return { total: chap.items.length, enonce: e, demo: d, pct };
+}
+
+function updateAllBars() {
+  const g = computeGlobal();
+  /* sidebar */
+  const pctEl = document.getElementById('scorePct');
+  const barEl = document.getElementById('scoreBarFill');
+  if (pctEl) pctEl.textContent = g.pct + '%';
+  if (barEl) barEl.style.width = g.pct + '%';
+  /* barre chapitre courant */
+  const cpbFill = document.getElementById('cpbFill');
+  const cpbPct  = document.getElementById('cpbPct');
+  if (cpbFill && view !== 'home') {
+    const chap = MATH_DATA.chapters.find(c => c.id === view);
+    if (chap) {
+      const sc = computeChap(chap);
+      cpbFill.style.width = sc.pct + '%';
+      if (cpbPct) cpbPct.textContent = sc.pct + '%';
+    }
+  }
+  /* dashboard home */
+  const dme = document.getElementById('dash-enonce');
+  const dmd = document.getElementById('dash-demo');
+  const dmt = document.getElementById('dash-total');
+  if (dme) dme.textContent = g.enonce;
+  if (dmd) dmd.textContent = g.demo;
+  if (dmt) dmt.textContent = g.pct + '%';
+  MATH_DATA.chapters.forEach(chap => {
+    const sc = computeChap(chap);
+    const fill = document.getElementById('cpfill-' + chap.id);
+    const pct  = document.getElementById('cppct-' + chap.id);
+    if (fill) fill.style.width = sc.pct + '%';
+    if (pct)  pct.textContent  = sc.pct + '%';
+  });
+}
+
+/* ══════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════ */
+function chapBadgeClass(c) {
+  return { teal:'cb-teal', purple:'cb-purple', coral:'cb-coral' }[c] || 'cb-teal';
+}
+function chapLabelClass(c) {
+  return { teal:'cl-teal', purple:'cl-purple', coral:'cl-coral' }[c] || 'cl-teal';
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+function buildNav() {
+  const q = query.toLowerCase();
+  let html = '';
+
+  MATH_DATA.chapters.forEach(chap => {
+    const items = chap.items.filter(item => {
+      if (filter !== 'all' && filter !== item.type) return false;
+      if (q && !item.title.toLowerCase().includes(q) && !item.content.toLowerCase().includes(q)) return false;
+      return true;
+    });
+
+    const exItems = (filter === 'all' || filter === 'exercice')
+      ? (EXERCISES_DATA[chap.id] || []).filter(ex => {
+          if (q && !ex.title.toLowerCase().includes(q)) return false;
+          return true;
+        })
+      : [];
+
+    if (!items.length && !exItems.length) return;
+
+    html += `<div class="nav-section">${chap.title}</div>`;
+    items.forEach(item => {
+      const cc   = item.type === 'definition' ? 'chip-def' : 'chip-thm';
+      const lbl  = item.type === 'definition' ? 'D' : 'T';
+      const st   = getStatus(item.id);
+      const ne   = st.enonce ? ' ne' : '';
+      const nd   = st.demo   ? ' nd' : '';
+      html += `<div class="nav-item" id="nav-${item.id}" onclick="navGo('${item.id}','${chap.id}')">
+        <div class="nav-item-inner">
+          <span class="nav-chip ${cc}">${lbl}</span>
+          <span class="nav-label">${item.title}</span>
+        </div>
+        <div class="nav-dots">
+          <span class="ndot${ne}" title="Énoncé"></span>
+          <span class="ndot${nd}" title="Démo"></span>
+        </div>
+      </div>`;
+    });
+    exItems.forEach(ex => {
+      html += `<div class="nav-item" id="nav-${ex.id}" onclick="navGoEx('${ex.id}','${chap.id}')">
+        <div class="nav-item-inner">
+          <span class="nav-chip chip-ex">E</span>
+          <span class="nav-label">${ex.serie} — ${ex.title}</span>
+        </div>
+      </div>`;
+    });
+  });
+
+  if (!html) html = `<div style="padding:1.5rem;font-size:12px;color:var(--text-faint);text-align:center;">Aucun résultat</div>`;
+  document.getElementById('navList').innerHTML = html;
+}
+
+/* ══════════════════════════════════════════
+   VUES
+══════════════════════════════════════════ */
+function showHome() {
+  view = 'home';
+  document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+
+  const g = computeGlobal();
+
+  const chapRows = MATH_DATA.chapters.map(chap => {
+    const sc = computeChap(chap);
+    return `<div class="chap-prog-row">
+      <span class="cpname">${chap.subtitle}</span>
+      <div class="cpbar-bg"><div class="cpbar-fill" id="cpfill-${chap.id}" style="width:${sc.pct}%"></div></div>
+      <span class="cppct" id="cppct-${chap.id}">${sc.pct}%</span>
+    </div>`;
+  }).join('');
+
+  const chapCards = MATH_DATA.chapters.map(chap => {
+    const defs = chap.items.filter(i => i.type === 'definition').length;
+    const thms = chap.items.filter(i => i.type === 'theoreme').length;
+    const exs  = (EXERCISES_DATA[chap.id] || []).length;
+    const sc   = computeChap(chap);
+    const lc   = chapLabelClass(chap.color);
+    return `<div class="chapter-card" onclick="showChapter('${chap.id}')">
+      <div class="chap-label ${lc}">${chap.title}</div>
+      <div class="chap-title">${chap.subtitle}</div>
+      <div class="chap-stats">
+        <span class="chap-stat"><span class="stat-dot sd-def"></span>${defs} déf.</span>
+        <span class="chap-stat"><span class="stat-dot sd-thm"></span>${thms} thm.</span>
+        <span class="chap-stat"><span class="stat-dot sd-ex"></span>${exs} ex.</span>
+      </div>
+      <div style="margin-top:0.75rem;">
+        <div class="cpbar-bg" style="height:5px;margin-bottom:4px;"><div class="cpbar-fill" style="width:${sc.pct}%"></div></div>
+        <div style="font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;">${sc.pct}%</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('mainContent').innerHTML = `
+    <div>
+      <div class="hero">
+        <div class="hero-eyebrow">Cours interactif</div>
+        <div class="hero-title">Mathématiques<br>pour informaticiens</div>
+        <div class="hero-desc">Clique sur un élément pour voir son énoncé, puis coche <strong>Énoncé su</strong> et <strong>Démo su</strong> pour suivre ta progression.</div>
+      </div>
+
+      <div class="dashboard">
+        <div class="dash-heading">📊 Progression globale</div>
+        <div class="dash-metrics">
+          <div class="metric-box">
+            <div class="metric-val mv-e" id="dash-enonce">${g.enonce}</div>
+            <div class="metric-lbl">Énoncés sus</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val mv-d" id="dash-demo">${g.demo}</div>
+            <div class="metric-lbl">Démos sues</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val mv-tot" id="dash-total">${g.pct}%</div>
+            <div class="metric-lbl">Score global</div>
+          </div>
+        </div>
+        <div class="chap-progress-list">
+          ${chapRows}
+        </div>
+      </div>
+
+      <div class="chapters-grid">${chapCards}</div>
+    </div>`;
+  renderMath();
+}
+
+function showChapter(chapId) {
+  view = chapId;
+  const chap = MATH_DATA.chapters.find(c => c.id === chapId);
+  if (!chap) return;
+
+  const q = query.toLowerCase();
+  const items = chap.items.filter(item => {
+    if (filter !== 'all' && item.type !== filter) return false;
+    if (q && !item.title.toLowerCase().includes(q) && !item.content.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const bc = chapBadgeClass(chap.color);
+  const sc = computeChap(chap);
+  const cards = items.length
+    ? items.map(item => cardHTML(item)).join('')
+    : `<div class="empty"><div class="empty-icon">🔍</div><p>Aucun résultat.</p></div>`;
+
+  /* Section exercices */
+  const chapExKey = { chap1:'chap1', chap2:'chap2', chap3:'chap3' }[chapId];
+  const exList = (EXERCISES_DATA[chapExKey] || []);
+  const exSection = exList.length ? `
+    <div class="ex-section-header">
+      <span class="ex-section-title">✏ Exercices de série</span>
+      <span class="ex-section-badge">${exList.length} exercices</span>
+    </div>
+    ${exList.map(ex => exCardHTML(ex)).join('')}
+  ` : '';
+
+  document.getElementById('mainContent').innerHTML = `
+    <div>
+      <div class="chap-header">
+        <button class="back-btn" onclick="showHome()">← Accueil</button>
+        <span class="chap-badge ${bc}">${chap.title}</span>
+        <span class="chap-heading">${chap.subtitle}</span>
+      </div>
+      <div class="chap-progress-bar">
+        <span class="cpb-label">Progression</span>
+        <div class="cpb-bar-bg"><div class="cpb-bar-fill" id="cpbFill" style="width:${sc.pct}%"></div></div>
+        <span class="cpb-pct" id="cpbPct">${sc.pct}%</span>
+      </div>
+      ${cards}
+      ${exSection}
+    </div>`;
+  renderMath();
+}
+
+/* ══════════════════════════════════════════
+   CARD
+══════════════════════════════════════════ */
+function cardHTML(item) {
+  const tb       = item.type === 'definition' ? 'tb-def' : 'tb-thm';
+  const typeText = item.type === 'definition' ? 'Déf.' : 'Thm.';
+  const tags     = item.tags ? item.tags.map(t => `<span class="tag-pill">${t}</span>`).join('') : '';
+  const st       = getStatus(item.id);
+
+  const explainSection = item.explanation ? `
+    <button class="explain-btn" id="ebtn-${item.id}" onclick="toggleExp('${item.id}',event)">
+      <span class="icon">✦</span> Expliquer en détail
+    </button>
+    <div class="explanation-panel" id="epan-${item.id}">
+      <div class="exp-header">
+        <span style="font-size:13px;">✦</span>
+        <span class="exp-header-title">Explication — ${item.title}</span>
+      </div>
+      <div class="exp-content">${fmt(item.explanation)}</div>
+    </div>` : '';
+
+  return `<div class="item-card" id="card-${item.id}">
+    <div class="card-header" onclick="toggleCard('${item.id}')">
+      <span class="type-badge ${tb}">${typeText}</span>
+      <span class="card-num">${item.number}</span>
+      <span class="card-title">${item.title}</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="content-block">${item.content}</div>
+
+      <div class="mastery-row">
+        <span class="mastery-label">Je sais :</span>
+        <button class="check-btn${st.enonce ? ' checked-e' : ''}"
+                id="cbtn-${item.id}-enonce"
+                onclick="toggleStatus('${item.id}','enonce',event)">
+          <span class="chk-box"></span>Énoncé su
+        </button>
+        <button class="check-btn${st.demo ? ' checked-d' : ''}"
+                id="cbtn-${item.id}-demo"
+                onclick="toggleStatus('${item.id}','demo',event)">
+          <span class="chk-box"></span>Démo su
+        </button>
+      </div>
+
+      ${explainSection}
+      ${tags ? `<div class="tags-row">${tags}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function fmt(text) {
+  return text
+    .split(/\n\n+/)
+    .map(p => `<p>${p.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>')}</p>`)
+    .join('');
+}
+
+/* ══════════════════════════════════════════
+   EXERCICE CARD
+══════════════════════════════════════════ */
+function exCardHTML(ex) {
+  const stepsHTML = ex.steps.map((s, i) => `
+    <div class="sol-step">
+      <div class="sol-step-num">${i+1}</div>
+      <div class="sol-step-body"><strong>${s.title}</strong><br>${s.body}</div>
+    </div>`).join('');
+
+  const refsHTML = ex.refs ? ex.refs.map(refId => {
+    const item = MATH_DATA.chapters.flatMap(c=>c.items).find(it=>it.id===refId);
+    if (!item) return '';
+    const chapId = MATH_DATA.chapters.find(c=>c.items.some(it=>it.id===refId))?.id;
+    return `<span class="ex-ref-link" onclick="navGo('${refId}','${chapId}')">${item.type==='definition'?'Déf.':'Thm.'} — ${item.title}</span>`;
+  }).join('') : '';
+
+  return `<div class="item-card ex-card" id="card-${ex.id}">
+    <div class="card-header" onclick="toggleCard('${ex.id}')">
+      <span class="type-badge tb-ex">Ex.</span>
+      <span class="ex-serie-badge">${ex.serie}</span>
+      <span class="card-num">${ex.number}</span>
+      <span class="card-title">${ex.title}</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="content-block">${ex.enonce}</div>
+      ${refsHTML ? `<div class="ex-refs"><span class="ex-refs-label">📎 Cours :</span>${refsHTML}</div>` : ''}
+      <button class="sol-btn" id="sbtn-${ex.id}" onclick="toggleSol('${ex.id}',event)">
+        <span>▶</span> Voir la solution étape par étape
+      </button>
+      <div class="sol-panel" id="span-${ex.id}">
+        <div class="sol-header">
+          <span>✓</span>
+          <span class="sol-header-title">Solution — ${ex.title}</span>
+        </div>
+        <div class="sol-content">${stepsHTML}</div>
+      </div>
+      <div class="tags-row"><span class="tag-pill">exercice</span><span class="tag-pill">${ex.serie.toLowerCase()}</span></div>
+    </div>
+  </div>`;
+}
+
+function toggleSol(id, e) {
+  e.stopPropagation();
+  const pan = document.getElementById('span-' + id);
+  const btn = document.getElementById('sbtn-' + id);
+  if (!pan) return;
+  const open = pan.classList.toggle('open');
+  if (btn) btn.innerHTML = open
+    ? '<span>▼</span> Masquer la solution'
+    : '<span>▶</span> Voir la solution étape par étape';
+  if (open) { setTimeout(()=>renderMath(), 50); }
+}
+
+/* ══════════════════════════════════════════
+   INTERACTIONS
+══════════════════════════════════════════ */
+function toggleCard(id) {
+  document.getElementById('card-' + id)?.classList.toggle('expanded');
+}
+
+function toggleExp(id, e) {
+  e.stopPropagation();
+  const pan = document.getElementById('epan-' + id);
+  const btn = document.getElementById('ebtn-' + id);
+  if (!pan) return;
+  const open = pan.classList.toggle('open');
+  if (btn) btn.innerHTML = open
+    ? '<span class="icon">✦</span> Fermer l\'explication'
+    : '<span class="icon">✦</span> Expliquer en détail';
+}
+
+function navGo(itemId, chapId) {
+  if (view !== chapId) {
+    showChapter(chapId);
+    setTimeout(() => scrollToCard(itemId), 100);
+  } else {
+    scrollToCard(itemId);
+  }
+}
+
+function navGoEx(exId, chapId) {
+  if (view !== chapId) {
+    showChapter(chapId);
+    setTimeout(() => scrollToExCard(exId), 150);
+  } else {
+    scrollToExCard(exId);
+  }
+}
+
+function scrollToExCard(exId) {
+  const card = document.getElementById('card-' + exId);
+  if (!card) return;
+  card.classList.add('expanded');
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+  document.getElementById('nav-' + exId)?.classList.add('active');
+}
+
+function scrollToCard(itemId) {
+  const card = document.getElementById('card-' + itemId);
+  if (!card) return;
+  card.classList.add('expanded');
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+  document.getElementById('nav-' + itemId)?.classList.add('active');
+}
+
+function setFilter(type) {
+  filter = type;
+  ['all','def','thm','ex'].forEach(t => {
+    const btn = document.getElementById('fb-' + t);
+    if (!btn) return;
+    const ft = t === 'all' ? 'all' : t === 'def' ? 'definition' : t === 'thm' ? 'theoreme' : 'exercice';
+    const activeClass = t === 'all' ? ' f-all' : t === 'def' ? ' f-def' : t === 'thm' ? ' f-thm' : ' f-ex';
+    btn.className = 'filter-btn' + (ft === type ? activeClass : '');
+  });
+  buildNav();
+  if (view !== 'home') showChapter(view);
+}
+
+function onSearch() {
+  query = document.getElementById('searchInput').value;
+  buildNav();
+  if (view !== 'home') showChapter(view);
+}
+
+/* ── INIT ── */
+buildNav();
+updateAllBars();
+showHome();
+
+
+/* ── SIDEBAR TOGGLE ── */
+function toggleSidebar() {
+  const app = document.querySelector('.app');
+  const toggle = document.getElementById('sidebarToggle');
+  const collapsed = app.classList.toggle('sidebar-collapsed');
+  localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0');
+}
+
+/* ── PANNEAU CLAUDE ── */
+function toggleClaudePanel() {
+  const panel = document.getElementById('claudePanel');
+  const fab   = document.getElementById('claudeFab');
+  const open  = panel.classList.toggle('open');
+  if (fab) {
+    fab.classList.toggle('panel-open', open);
+    fab.innerHTML = open
+      ? '<span class="fab-dot"></span> Fermer Claude'
+      : '<span class="fab-dot"></span> Ouvrir Claude';
+  }
+}
+
+/* ── RESTORE SIDEBAR STATE ── */
+(function() {
+  if (localStorage.getItem('sidebarCollapsed') === '1') {
+    document.querySelector('.app').classList.add('sidebar-collapsed');
+  }
+})();
+
+</script>
+</body>
+</html>
