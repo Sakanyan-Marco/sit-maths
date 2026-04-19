@@ -56,6 +56,10 @@
   --coral-bg:    rgba(194,65,12,0.07);
   --coral-border:rgba(194,65,12,0.2);
 
+  --green-color: #15803d;
+  --green-bg:    rgba(21,128,61,0.07);
+  --green-border:rgba(21,128,61,0.2);
+
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
 }
@@ -99,6 +103,10 @@
   --coral-color: #fb923c;
   --coral-bg:    rgba(251,146,60,0.08);
   --coral-border:rgba(251,146,60,0.22);
+
+  --green-color: #4ade80;
+  --green-bg:    rgba(74,222,128,0.07);
+  --green-border:rgba(74,222,128,0.20);
 
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.25);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.35);
@@ -366,6 +374,7 @@ body {
 .chap-label.cl-teal   { color: var(--teal-color); }
 .chap-label.cl-purple { color: var(--purple-color); }
 .chap-label.cl-coral  { color: var(--coral-color); }
+.chap-label.cl-green  { color: var(--green-color); }
 
 .chap-title {
   font-family: 'Lora', serif;
@@ -449,6 +458,7 @@ body {
 .cb-teal   { background: var(--teal-bg);   color: var(--teal-color);   border: 1px solid var(--teal-border); }
 .cb-purple { background: var(--purple-bg); color: var(--purple-color); border: 1px solid var(--purple-border); }
 .cb-coral  { background: var(--coral-bg);  color: var(--coral-color);  border: 1px solid var(--coral-border); }
+.cb-green  { background: var(--green-bg);  color: var(--green-color);  border: 1px solid var(--green-border); }
 
 .chap-heading {
   font-family: 'Lora', serif;
@@ -2421,6 +2431,130 @@ Donc \\(\\exists f\\) telle que \\(y = f(x)\\) près de \\((1,1)\\), et :
           tags: ["fonctions implicites", "équation implicite", "dérivée implicite"]
         }
       ]
+    },
+    {
+      id: "chap4",
+      title: "Chapitre 4",
+      subtitle: "Optimisation",
+      color: "green",
+      items: [
+        {
+          id: "def4_1",
+          type: "definition",
+          number: "4.1",
+          title: "Extremum local (min/max)",
+          content: "Soit \\(K \\subset \\mathbb{R}^n\\) et \\(f : K \\to \\mathbb{R}\\). On dit que \\(a \\in K\\) est un <strong>minimum local</strong> de \\(f\\) sur \\(K\\) s'il existe un voisinage \\(U\\) de \\(a\\) tel que :\\[f(x) \\geq f(a) \\quad \\forall x \\in U \\cap K\\]C'est un minimum local <strong>strict</strong> si \\(f(x) > f(a)\\) pour tout \\(x \\in U \\cap K,\\ x \\neq a\\). Le maximum local (strict) se définit de même en remplaçant \\(f\\) par \\(-f\\).",
+          explanation: `**Intuition :** Un minimum local est un point "creux" — on ne peut pas faire mieux en restant dans un petit voisinage.
+
+**Distinction local/global :** Un minimum global satisfait \\(f(x) \\geq f(a)\\) pour **tout** \\(x \\in K\\), pas seulement près de \\(a\\).
+
+**Rappel 1D :** Pour \\(f : \\mathbb{R} \\to \\mathbb{R}\\) de classe \\(C^2\\) :
+\\[f'(a) = 0 \\text{ et } f''(a) > 0 \\implies a \\text{ est min. local strict}\\]
+\\[f'(a) = 0 \\text{ et } f''(a) < 0 \\implies a \\text{ est max. local strict}\\]
+Si \\(f''(a) = 0\\), le test est non concluant (ex : \\(f(x) = x^4\\), min en 0 mais \\(f''(0) = 0\\)).`,
+          tags: ["optimisation", "extremum", "minimum", "maximum"]
+        },
+        {
+          id: "thm4_2",
+          type: "theoreme",
+          number: "4.2",
+          title: "CNS d'extremum local (condition hessienne)",
+          content: "Soit \\(f : U \\to \\mathbb{R}\\) de classe \\(C^2\\), \\(U\\) ouvert, \\(a \\in U\\).<br><br><strong>(a) Condition suffisante :</strong> Si \\(\\nabla f(a) = 0\\) et \\(\\nabla^2 f(a)\\) est définie positive, alors \\(a\\) est un minimum local strict de \\(f\\).<br><br><strong>(b) Condition nécessaire :</strong> Si \\(a\\) est un minimum local de \\(f\\), alors \\(\\nabla f(a) = 0\\) et \\(\\nabla^2 f(a)\\) est semi-définie positive.<br><br>De même pour un maximum en remplaçant \\(f\\) par \\(-f\\) (hessienne définie/semi-définie négative).",
+          explanation: `**Idée de la preuve (suffisante) :** Par Taylor ordre 2 :
+\\[f(a+h) = f(a) + \\underbrace{\\langle\\nabla f(a), h\\rangle}_{=0} + \\frac{1}{2}h^T H_f(a) h + o(\\|h\\|^2)\\]
+Si \\(H_f(a)\\) est déf. positive avec plus petite v.p. \\(\\lambda_{\\min} > 0\\) :
+\\[h^T H_f(a) h \\geq \\lambda_{\\min}\\|h\\|^2\\]
+Donc pour \\(\\|h\\|\\) assez petit : \\(f(a+h) \\geq f(a) + \\frac{\\lambda_{\\min}}{2}\\|h\\|^2 > f(a)\\). ✓
+
+**Attention au (★) :** Si \\(\\nabla f(a) = 0\\) et \\(\\nabla^2 f(a)\\) est seulement **semi-définie** positive, on ne peut rien conclure — ce peut être un min, un max ou un point selle. Ex : \\(f(x) = x^4\\) en \\(a=0\\).
+
+**Point selle :** Si \\(\\nabla^2 f(a)\\) est **indéfinie** (v.p. de signes opposés), alors \\(a\\) n'est ni max ni min local.`,
+          tags: ["optimisation", "hessienne", "extremum", "condition suffisante"]
+        },
+        {
+          id: "def4_lagrangien",
+          type: "definition",
+          number: "4.7",
+          title: "Fonction de Lagrange (Lagrangien)",
+          content: "Soient \\(f : U \\to \\mathbb{R}\\) et \\(g : U \\to \\mathbb{R}^m\\) de classe \\(C^1\\). La <strong>fonction de Lagrange</strong> (ou Lagrangien) est :\\[\\mathcal{L}(x, \\lambda) = f(x) - \\lambda^T g(x) = f(x) - \\sum_{i=1}^m \\lambda_i g_i(x)\\]où \\(\\lambda = (\\lambda_1, \\ldots, \\lambda_m) \\in \\mathbb{R}^m\\) sont les <strong>multiplicateurs de Lagrange</strong>.",
+          explanation: `**Intuition :** Le Lagrangien "pénalise" la violation des contraintes. Les multiplicateurs \\(\\lambda_i\\) mesurent combien la valeur optimale change si on relaxe la contrainte \\(g_i(x) = 0\\).
+
+**Condition d'optimalité :** Chercher les extrema de \\(f\\) sous \\(g(x)=0\\) revient à résoudre :
+\\[\\nabla_x \\mathcal{L}(x, \\lambda) = 0 \\quad \\text{et} \\quad g(x) = 0\\]
+soit \\(n + m\\) équations pour \\(n + m\\) inconnues \\((x, \\lambda)\\).
+
+**Interprétation géométrique :** À l'optimum, \\(\\nabla f(a) = \\lambda^T \\nabla g(a)\\) — le gradient de \\(f\\) est combinaison linéaire des gradients des contraintes. Les courbes de niveau de \\(f\\) sont tangentes à la surface de contrainte.`,
+          tags: ["optimisation", "Lagrange", "contraintes", "multiplicateurs"]
+        },
+        {
+          id: "def4_5",
+          type: "definition",
+          number: "4.5",
+          title: "Qualification de la contrainte",
+          content: "Soit \\(g : U \\to \\mathbb{R}^m\\) de classe \\(C^1\\), \\(a \\in U\\) avec \\(g(a) = 0\\). On dit que la contrainte est <strong>régulière</strong> en \\(a\\) si :\\[\\text{rang}\\, g'(a) = m\\]c'est-à-dire si les gradients \\(\\nabla g_1(a), \\ldots, \\nabla g_m(a)\\) sont <strong>linéairement indépendants</strong>.",
+          explanation: `**Pourquoi c'est nécessaire ?** Le théorème de Lagrange ne s'applique que si la contrainte est régulière. Sans cette hypothèse, \\(\\nabla f(a) = \\lambda^T \\nabla g(a)\\) peut être faux.
+
+**Intuition :** La contrainte est régulière si elle définit localement une surface "lisse" de dimension \\(n - m\\) (pas de point singulier, pas de rebroussement).
+
+**Cas \\(m = 1\\) :** La contrainte \\(g(x) = 0\\) est régulière en \\(a\\) ssi \\(\\nabla g(a) \\neq 0\\).
+
+**Lien avec le TFI :** Si la contrainte est régulière, le théorème des fonctions implicites garantit qu'on peut localement paramétrer les solutions de \\(g(x) = 0\\) par \\(n - m\\) variables libres.`,
+          tags: ["optimisation", "contraintes", "qualification", "régularité"]
+        },
+        {
+          id: "thm4_6",
+          type: "theoreme",
+          number: "4.6",
+          title: "Multiplicateurs de Lagrange (condition nécessaire)",
+          content: "Soient \\(U \\subset \\mathbb{R}^n\\) ouvert, \\(f : U \\to \\mathbb{R}\\) de classe \\(C^1\\), \\(g : U \\to \\mathbb{R}^m\\) une contrainte régulière en \\(a \\in U\\).<br><br>Si \\(a\\) est un extremum local de \\(f\\) sous la contrainte \\(g(x) = 0\\), alors :\\[\\exists\\, \\lambda \\in \\mathbb{R}^m \\quad \\text{tel que} \\quad \\nabla f(a) = \\lambda^T g'(a)\\]Autrement dit : \\(\\nabla_x \\mathcal{L}(a, \\lambda) = 0\\) et \\(g(a) = 0\\).",
+          explanation: `**Idée de la preuve :** Par le TFI (contrainte régulière), on peut écrire localement \\(x = (u, \\varphi(u))\\). On pose \\(F(u) = f(u, \\varphi(u))\\). Comme \\(a\\) est extremum de \\(f\\) sous contrainte, \\(u_0\\) est extremum libre de \\(F\\), donc \\(F'(u_0) = 0\\). La règle de la chaîne donne alors la condition de Lagrange.
+
+**Système à résoudre** (\\(n + m\\) équations, \\(n + m\\) inconnues) :
+\\[\\begin{cases} \\nabla_x \\mathcal{L}(x, \\lambda) = \\nabla f(x) - \\lambda^T g'(x) = 0 \\\\ g(x) = 0 \\end{cases}\\]
+
+**Exemple :** Maximiser \\(f(x_1,x_2) = x_1 x_2\\) sous \\(x_1^2 + x_2^2 = 1\\).
+Lagrangien : \\(\\mathcal{L} = x_1x_2 - \\lambda(x_1^2+x_2^2-1)\\).
+Conditions : \\(x_2 = 2\\lambda x_1\\), \\(x_1 = 2\\lambda x_2\\), \\(x_1^2+x_2^2=1\\).
+Solutions : \\(\\lambda = \\pm\\frac{1}{2}\\), points candidats \\((\\pm\\frac{\\sqrt{2}}{2}, \\pm\\frac{\\sqrt{2}}{2})\\).`,
+          tags: ["optimisation", "Lagrange", "multiplicateurs", "condition nécessaire"]
+        },
+        {
+          id: "thm4_8",
+          type: "theoreme",
+          number: "4.8",
+          title: "CNS d'extremum sous contrainte (hessienne du Lagrangien)",
+          content: "Soient \\(f, g\\) de classe \\(C^2\\), contrainte régulière en \\(a\\), \\(\\exists\\,\\lambda\\) tel que \\(\\nabla_x\\mathcal{L}(a,\\lambda)=0\\).<br><br><strong>(a) Condition suffisante :</strong> Si \\(h^T \\nabla^2_{xx}\\mathcal{L}(a,\\lambda)\\,h > 0\\) pour tout \\(h \\neq 0\\) avec \\(g'(a)h = 0\\), alors \\(a\\) est un minimum local strict sous contrainte.<br><br><strong>(b) Condition nécessaire :</strong> Si \\(a\\) est minimum local sous contrainte, alors \\(h^T \\nabla^2_{xx}\\mathcal{L}(a,\\lambda)\\,h \\geq 0\\) pour tout \\(h\\) avec \\(g'(a)h = 0\\).",
+          explanation: `**Idée clé :** On ne teste la positivité de la hessienne du Lagrangien que dans les **directions admissibles** — celles qui respectent les contraintes au premier ordre : \\(g'(a)h = 0\\).
+
+Ce sous-espace a dimension \\(n - m\\) (car \\(\\text{rang}\\,g'(a) = m\\)).
+
+**Comment calculer :** On cherche une base de \\(\\ker g'(a)\\), puis on vérifie la positivité de \\(h^T \\nabla^2_{xx}\\mathcal{L}\\, h\\) sur cette base.
+
+**Si dim(ker) = 1 :** Un seul vecteur \\(h_0\\) à tester — positif = min, négatif = max.
+
+**Hessienne du Lagrangien :**
+\\[\\nabla^2_{xx}\\mathcal{L}(x,\\lambda) = \\nabla^2 f(x) - \\sum_{i=1}^m \\lambda_i \\nabla^2 g_i(x)\\]`,
+          tags: ["optimisation", "Lagrange", "hessienne", "condition suffisante", "contraintes"]
+        },
+        {
+          id: "def4_ineq",
+          type: "definition",
+          number: "4.3",
+          title: "Contraintes d'inégalité — méthode pratique",
+          content: "Pour minimiser \\(f\\) sur \\(K = \\{x \\in \\mathbb{R}^n : h_i(x) \\leq 0\\}\\), on procède en <strong>3 étapes</strong> :<br><br><strong>1. Intérieur :</strong> Chercher les points critiques libres (\\(\\nabla f(x) = 0\\)) dans l'intérieur de \\(K\\).<br><strong>2. Bord :</strong> Étudier chaque morceau du bord avec Lagrange (chaque contrainte active \\(h_i(x) = 0\\)).<br><strong>3. Jonctions :</strong> Examiner les points de jonction entre morceaux du bord.<br><br>Évaluer \\(f\\) en tous les candidats et comparer.",
+          explanation: `**Exemple du cours :** Minimiser \\(f(x_1,x_2) = x_1^2 + (x_2-\\frac{1}{2})^2\\) sur \\(K = \\{x_1^2+x_2^2 \\leq 1,\\ x_2 \\geq 0\\}\\).
+
+**Étape ①** — Intérieur : \\(\\nabla f = (2x_1, 2x_2-1)^T = 0 \\Rightarrow (0, \\frac{1}{2})\\). Ce point est dans \\(K\\) ✓. C'est le minimum global \\(f = 0\\).
+
+**Étape ②** — Bord \\(x_1^2+x_2^2=1,\\ x_2\\geq0\\) : Lagrange donne \\((0,1)\\) comme candidat.
+Bord \\(x_2=0,\\ x_1^2\\leq1\\) : substituer → min en \\(x_1=0\\), candidats \\((\\pm1, 0)\\).
+
+**Étape ③** — Jonctions : \\((\\pm1, 0)\\).
+
+**Bilan :** \\(f(0,\\frac{1}{2})=0\\) (min global), \\(f(\\pm1,0)=\\frac{5}{4}\\) (max global), \\(f(0,1)=\\frac{1}{4}\\).`,
+          tags: ["optimisation", "contraintes inégalité", "bord", "Lagrange"]
+        }
+      ]
     }
   ]
 };
@@ -2715,7 +2849,8 @@ const EXERCISES_DATA = {
         { title: "Conclusion", body: "**x₃=f(x₁,x₂) ✅** : possible localement (∂F/∂x₃=-1≠0). \\n**x₂=g(x₁,x₃) ❌** et **x₁=h(x₂,x₃) ❌** : non garantis (dérivées partielles nulles)." }
       ]
     }
-  ]
+  ],
+  chap4: []
 };
 
 
@@ -2857,10 +2992,10 @@ function updateAllBars() {
    HELPERS
 ══════════════════════════════════════════ */
 function chapBadgeClass(c) {
-  return { teal:'cb-teal', purple:'cb-purple', coral:'cb-coral' }[c] || 'cb-teal';
+  return { teal:'cb-teal', purple:'cb-purple', coral:'cb-coral', green:'cb-green' }[c] || 'cb-teal';
 }
 function chapLabelClass(c) {
-  return { teal:'cl-teal', purple:'cl-purple', coral:'cl-coral' }[c] || 'cl-teal';
+  return { teal:'cl-teal', purple:'cl-purple', coral:'cl-coral', green:'cl-green' }[c] || 'cl-teal';
 }
 
 /* ══════════════════════════════════════════
@@ -3010,7 +3145,7 @@ function showChapter(chapId) {
     : `<div class="empty"><div class="empty-icon">🔍</div><p>Aucun résultat.</p></div>`;
 
   /* Section exercices */
-  const chapExKey = { chap1:'chap1', chap2:'chap2', chap3:'chap3' }[chapId];
+  const chapExKey = { chap1:'chap1', chap2:'chap2', chap3:'chap3', chap4:'chap4' }[chapId];
   const exList = (EXERCISES_DATA[chapExKey] || []);
   const exSection = exList.length ? `
     <div class="ex-section-header">
@@ -3094,6 +3229,13 @@ function fmt(text) {
     .split(/\n\n+/)
     .map(p => `<p>${p.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>')}</p>`)
     .join('');
+}
+
+function fmtContent(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*((?!\*)(.*?))\*/g, '<em>$2</em>')
+    .replace(/\\n/g, '<br>');
 }
 
 /* ══════════════════════════════════════════
